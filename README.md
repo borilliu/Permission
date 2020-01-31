@@ -1,3 +1,7 @@
+项目介绍
+https://zhuanlan.zhihu.com/p/74054179
+https://blog.csdn.net/JWinni/article/details/96354774
+
 >该项目源码地址：https://github.com/ggb2312/permission
 项目在线地址：http://47.100.54.177:8080/permission/login.html
 初始用户：  
