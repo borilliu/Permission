@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * @ClassName:  User   
  * @Description:用户实体类
- * @author:     最后的轻语_dd43
- * @date:       2019年4月5日
+ * @author:     DavidLiu
+ * @date:       2020年2月2日
  */
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -27,6 +27,13 @@ public class User implements Serializable{
 	private String user_pwd;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date user_birthday;
+	private String user_contact;
+	public String getUser_contact() {
+		return user_contact;
+	}
+	public void setUser_contact(String user_contact) {
+		this.user_contact = user_contact;
+	}
 	public Integer getUser_id() {
 		return user_id;
 	}
