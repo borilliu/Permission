@@ -76,6 +76,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test='user_birthday==null'>
 			,null
 		</if>
+		<if test='user_contact!= null'>
+			,#{user_contact}
+		</if>
+		<if test='user_contact== null'>
+			,null
+		</if>
 		);
 	</insert>
 	<!-- 给用户添加对应角色信息 -->
@@ -91,6 +97,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test='user_name!=null'>
 			,user_name = #{user_name}
+		</if>
+		<if test='user_contact!=null'>
+			,user_contact = #{user_contact}
 		</if>
 		<if test='user_pwd!=null'>
 			,user_pwd = #{user_pwd}

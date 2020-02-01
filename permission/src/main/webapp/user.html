@@ -40,13 +40,22 @@
 		title : '真实姓名',
 		width : 100
 	}, {
+		field : 'user_contact',
+		title : '联系方式',
+		width : 100
+	}
+	/*
+	,
+	{
 		field : 'user_birthday',
 		title : '出生日期',
 		width : 100,
 		formatter : function(value) {
 			return new Date(value).Format("yyyy-MM-dd");
 		}
-	}, ] ];
+	}, 
+	*/
+	] ];
 </script>
 </head>
 <body class="easyui-layout">
@@ -72,7 +81,7 @@
 		<table id="grid"></table>
 	</div>
 	<!-- 添加、修改 -->
-	<div id="editDlg" class="easyui-window" data-options="closed:true">
+	<div id="editDlg" class="easyui-window" data-options="closed:true" style="padding:25px;10px">
 		<form id="editForm">
 			<input name="user_id" type="hidden">
 			<table>
@@ -93,12 +102,17 @@
 					<td><input name="user_name"></td>
 				</tr>
 				<tr>
-					<td>出生日期</td>
-					<td><input name="user_birthday" class="easyui-datebox"
-						editable="false"></td>
+					<td>联系方式</td>
+					<td><input name="user_contact"></td>
 				</tr>
+				<!--
+				<tr>
+					<td>出生日期</td>
+					<td><input name="user_birthday" class="easyui-datebox"	editable="false"></td>
+				</tr>
+				  -->
 			</table>
-			<button id="btnSave" type="button">保存</button>
+			<div ><button id="btnSave" type="button">保存</button></div>
 		</form>
 	</div>
 	<!-- 导入窗口 -->
