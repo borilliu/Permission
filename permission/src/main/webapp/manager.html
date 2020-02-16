@@ -9,7 +9,7 @@
 <script type="text/javascript" src="ui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="ui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="ui/jquery.serializejson.min.js"></script>
-<script type="text/javascript" src="js/region.js"></script>
+<script type="text/javascript" src="js/manager.js"></script>
 </head>
 <body class="easyui-layout">
 	<!-- 适应父容器大小 -->
@@ -87,18 +87,6 @@
 					</td>
 				</tr>
 			</table>
-		</form>
-	</div>
-	<!-- 树形菜单的右键设置 -->
-	<div id="mm" class="easyui-menu" style="width: 120px;">
-		<div data-options="iconCls:'icon-add'">添加</div>
-		<div data-options="iconCls:'icon-save'">修改</div>
-		<div data-options="iconCls:'icon-undo'">重命名</div>
-	</div>
-	<!-- 树形菜单右键重命名设置 -->
-	<div id="renameDlg">
-		<form id="renameForm" method="post">
-			新名称:<input type="text" name="region_name" />
 		</form>
 	</div>
 </body>

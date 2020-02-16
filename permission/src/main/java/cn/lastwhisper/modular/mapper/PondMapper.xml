@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lastwhisper.modular.mapper.PondMapper">
+
+	<select id="findPondlistByPage" parameterType="pond" resultType="pond">
+		SELECT * FROM pond
+		<if test="pondname!=null">
+			where
+			pondname like '%${pondname}%'
+		</if>
+	</select>
+
+	<select id="findPondFuzzyName" parameterType="java.lang.String" resultType="pond">
+		select pondname from pond
+		where
+		pondname like concat('%', #{pondname}, '%') 
+	</select>
+
+</mapper>

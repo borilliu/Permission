@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.lastwhisper.modular.mapper.RegionMapper">
+<mapper namespace="cn.lastwhisper.modular.mapper.ManagerMapper">
 <!-- 初始化菜单树 -->
     <resultMap type="cn.lastwhisper.core.util.Tree" id="regionTree">
         <id column="region_id" property="id" javaType="java.lang.String" />
@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 先查询菜单根级目录 -->
 	<!-- 这里的返回结果必须为resultMap，并且值为上面构建的resultMap的id的值 -->
 	<select id="selectRegionList" resultMap="regionTree">
-		select * from region where pid ='-1' order by region_order
+		select * from region where pid ='4205' order by region_order
 	</select>
 <!-- 查询二级菜单 -->
 	<select id="selectChild" resultMap="regionTree">
@@ -26,27 +26,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT region_id,region_name FROM region where pid = #{pid} order by region_order
 	</select>
 	
-	<!-- 查询所有菜单的所有属性 -->
+	<!-- 查询所有菜单的所有属性 --> 
 	<select id="selectRegion" resultType="region">
 		SELECT region_id,region_code,region_name,region_order,pid,is_parent FROM region where pid = #{pid} order by region_order
 	</select>
 	
+	<select id="selectRegionById" resultType="region">
+		SELECT region_id,region_code,region_name,region_order,pid,is_parent FROM region where region_id = #{region_id} order by region_order
+	</select>
+	
 	<!-- 根据userid加载对应菜单 -->
-	<select id="selectRegionByUserid" resultType="region">
+	<select id="findAllRegionList" resultType="region">
 		SELECT 
 			region_id,region_code,region_name,region_order,pid,is_parent
 		FROM 
 			region
-		WHERE 
-			pid ='-1'
 		order by
 			region_order
 	</select>
 <!-- 查询菜单结束 -->
 
 <!-- 根据id查询菜单 -->
-	<select id="selectRegionById" parameterType="java.lang.String" resultType="region">
-		select * from region where region_id = #{region_id} order by region_order
+	<select id="findManagerByRegionId" parameterType="java.lang.String" resultType="manager">
+		select * from region_manager where region_id = #{region_id}  
 	</select>
 <!-- 插入数据 -->
 	<insert id="insertRegion" parameterType="region">
@@ -91,8 +93,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		);
 	</insert>
 <!-- 	根据id删除数据-->
-	<update id="deleteRegionById">
-		delete from menu where menuid = #{0}
+	<update id="deleteManagerById">
+		delete from region_manager where manager_id = #{0}
 	</update>
 <!-- 	根据id修改数据 -->
 	<update id="updateRegionById" parameterType="region">
