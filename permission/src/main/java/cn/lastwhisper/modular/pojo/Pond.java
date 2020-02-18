@@ -1,14 +1,18 @@
 package cn.lastwhisper.modular.pojo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.LinkedList;
-import java.util.List;
+import cn.lastwhisper.modular.pojo.Region;
+import cn.lastwhisper.modular.pojo.Manager;
 
-public class Pond {
+public class Pond  implements Serializable{
+	 private static final long serialVersionUID = 1L;
 	 private String pond_id; 
 	 private Integer  date_from; 
 	 private String  region_id; 
+	 private Region region;
+	 private String  region_name;
 	 private String  village_addr; 
 	 private String   pondname;
 	 private BigDecimal pondarea;
@@ -22,6 +26,7 @@ public class Pond {
 	 private Integer  lat_min; 
 	 private Integer  lat_sec; 
 	 private String  town_manager_id; 
+	 private Manager manager;
 	 private String  village_manager_name; 
 	 private String  village_manager_title; 
 	 private String  village_manager_tel; 
@@ -181,6 +186,23 @@ public class Pond {
 	public void setUpdate_time(Timestamp update_time) {
 		this.update_time = update_time;
 	}
-
+	 public String getRegion_name() {
+		return region_name;
+	}
+	public void setRegion_name(String region_name) {
+		this.region_name = region_name;
+	}
+	public Region getRegion() {
+		return region;
+	}
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+	public Manager getManager() {
+		return manager;
+	}
+	public void setManager(Manager manager) {
+		this.manager = manager;
+	}
 
 }

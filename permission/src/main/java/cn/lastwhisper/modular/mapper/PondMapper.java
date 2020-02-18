@@ -12,7 +12,7 @@ public interface PondMapper {
 
 	public List<Pond> findPondFuzzyName(@Param("pondname")String pond_name);
 
-	public List<Pond> findPondByID(String pond_id);
+	public Pond getPondById(String pond_id);
 
 	public Integer insertPond(Pond pond);
 	

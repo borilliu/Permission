@@ -10,13 +10,7 @@ package cn.lastwhisper.core.util;
 
 import java.io.Serializable;
 import java.util.List;
-/**
- * 
- * @ClassName:  EasyUIDataGridResult   
- * @Description:easyui分页
- * @author:     最后的轻语_dd43
- * @date:       2019年4月6日
- */
+
 public class EasyUIDataGridResult implements Serializable {
 	
 	/**

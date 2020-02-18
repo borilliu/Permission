@@ -15,6 +15,8 @@ public interface PondService {
 	public EasyUIDataGridResult findPondlistByPage(Pond pond, Integer page, Integer rows);
 
 	public List<Pond> findPondFuzzyName(String pondName);
+	
+	public Pond getPondById(String pond_id);
 
 	public GlobalResult addPond(Pond pond);
 

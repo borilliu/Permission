@@ -3,15 +3,64 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.lastwhisper.modular.mapper.PondMapper">
-
+    <resultMap type="cn.lastwhisper.modular.pojo.Pond" id="pondMap">
+        <id column="pond_id" property="pond_id"/>
+        <result column="region_id" property="region_id"/>
+        <result column="date_from" property="date_from"/>
+        <result column="village_addr" property="village_addr"/>
+        <result column="pondname" property="pondname"/>
+        <result column="pondarea" property="pondarea"/>
+        <result column="pondage" property="pondage"/>
+        <result column="cover_area" property="cover_area"/>
+        <result column="benifit_farmers" property="benifit_farmers"/>
+        <result column="lng_deg" property="lng_deg"/>
+        <result column="lng_min" property="lng_min"/>
+        <result column="lng_sec" property="lng_sec"/>
+        <result column="lat_deg" property="lat_deg"/>
+        <result column="lat_min" property="lat_min"/>
+        <result column="lat_sec" property="lat_sec"/>
+        <result column="town_manager_id" property="town_manager_id"/>
+        <result column="village_manager_name" property="village_manager_name"/>
+        <result column="village_manager_title" property="village_manager_title"/>
+        <result column="village_manager_tel" property="village_manager_tel"/>
+        <result column="village_cleaner_name" property="village_cleaner_name"/>
+        <result column="village_cleaner_title" property="village_cleaner_title"/>
+        <result column="village_cleaner_tel" property="village_cleaner_tel"/>
+        <result column="remark" property="remark"/>
+        <result column="status" property="status"/>
+        <result column="update_time" property="update_time"/>
+        <!-- 
+        <association property="manager" column="town_manager_id" javaType = "cn.lastwhisper.modular.pojo.Manager" >
+        	<id property="id" column="manager_id"/>
+            <result property="manager_name" column="manager_name"/>
+         </association>   
+         -->
+        <association column="region_id" property="region"  select ="getRegionByID" />
+        <association column="town_manager_id" property="manager"  select ="getManagerByID" />
+    </resultMap> 
+	<select id="getPondById" parameterType="pond" resultMap="pondMap">
+		SELECT * FROM pond where pond_id = #{pond_id}
+	</select>
+ 	<select id="getRegionByID" parameterType="java.lang.String" resultType="cn.lastwhisper.modular.pojo.Region">
+		select * from region where region_id = #{region_id}
+	</select>     
+	 	<select id="getManagerByID" parameterType="java.lang.String" resultType="cn.lastwhisper.modular.pojo.Manager">
+		select *  from manager where	manager_id = #{town_manager_id}
+	</select> 	
 	<select id="findPondlistByPage" parameterType="pond" resultType="pond">
-		SELECT * FROM pond
+		SELECT pond.pond_id,pond.date_from,pond.region_id,region.region_name,pond.village_addr,
+    		pond.pondname,pond.pondarea,pond.pondage,pond.cover_area,pond.benifit_farmers,
+    		pond.lng_deg, pond.lng_min, pond.lng_sec, pond.lat_deg,pond.lat_min,pond.lat_sec,
+    		pond.town_manager_id,pond.village_manager_name,pond.village_manager_title, pond.village_manager_tel,
+    		pond.village_cleaner_name,pond.village_cleaner_title,pond.village_cleaner_tel, pond.remark,
+    		pond.status, pond.update_time
+		FROM pond,region
+		where pond.region_id=region.region_id
 		<if test="pondname!=null">
-			where
-			pondname like '%${pondname}%'
+			and
+			pond.pondname like '%${pondname}%'
 		</if>
 	</select>
-
 	<select id="findPondFuzzyName" parameterType="java.lang.String" resultType="pond">
 		select pondname from pond
 		where

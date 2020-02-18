@@ -1,9 +1,11 @@
 package cn.lastwhisper.modular.pojo;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Region {
+public class Region  implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String region_id;
 	private String region_code;
 	private String region_name;

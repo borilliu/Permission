@@ -1,6 +1,9 @@
 package cn.lastwhisper.modular.pojo;
 
-public class Manager {
+import java.io.Serializable;
+
+public class Manager  implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String manager_id;
 	private String region_id;
 	private String manager_name;
