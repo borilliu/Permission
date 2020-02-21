@@ -50,6 +50,12 @@ private static Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
 	public List<Region> findRegionById(String region_id) {
 		return regionMapper.selectRegionById(region_id);
 	}
+	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Override
+	public List<Region> findRegionsByPId(String pid) {
+		return regionMapper.selectRegion(pid);
+	}
 
 	@LogAnno(operateType = "添加Region")
 	@Override

@@ -60,6 +60,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and
 			pond.pondname like '%${pondname}%'
 		</if>
+		<if test="region_id!=null">
+			and
+			pond.region_id = '${region_id}'
+		</if>
 	</select>
 	<select id="findPondFuzzyName" parameterType="java.lang.String" resultType="pond">
 		select pondname from pond

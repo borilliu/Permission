@@ -28,6 +28,11 @@ public class RegionController {
 		return regionService.findRegionList(); 
 	}
 	
+	@RequestMapping("/region/getregions")
+	@ResponseBody	
+	public List<Region> findRegionsByPId(String pid){
+		return regionService.findRegionsByPId(pid);
+	}
 
 	@RequestMapping("/region/regionfindById")
 	@ResponseBody

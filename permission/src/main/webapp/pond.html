@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>员工管理</title>
+<title>堰塘管理</title>
 <link rel="stylesheet" type="text/css"
 	href="ui/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="ui/themes/icon.css">
@@ -72,11 +72,11 @@
 		<form id="searchForm">
 			<table cellpadding="5">
 				<tr>
+					<td>所属乡镇 ：</td>
+					<td><input id="cc_region" class="easyui-combobox" name="region_id" value="" panelHeight="150" width ="120"></td>
 					<td>堰塘名称 ：</td>
-					<td><input name="pondname" class="easyui-combobox"
-						id="inputtable" /></td>
-					<td><a class="easyui-linkbutton"
-						data-options="iconCls:'icon-search'" id="btnSearch">查询</a></td>
+					<td><input name="pondname" class="easyui-combobox" id="inputtable" /></td>
+					<td><a class="easyui-linkbutton"	data-options="iconCls:'icon-search'" id="btnSearch">查询</a></td>
 					<td><a class="easyui-linkbutton"
 						data-options="iconCls:'icon-remove'" id="btnReset">重置</a></td>
 			</table>

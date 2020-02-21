@@ -17,9 +17,11 @@ public interface RegionService {
 	GlobalResult deleteRegionById(String regionId);
 
 	GlobalResult updateRegionById(Region region);
-
+	
+	List<Region> findRegionsByPId(String pid);
+	
 	Region findRegionByUserid(Integer userid);
-
+	
 	List<Region> findRegionListByUserid(Integer userid);
 
 }

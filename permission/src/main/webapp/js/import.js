@@ -45,6 +45,14 @@ $(function() {
 		$('#searchForm').form('clear');
 	});
 	
+	// 点击保存按钮
+	$('#btnImp').bind('click', function() {
+		var formData = $('#importForm').serializeJSON();
+		var data = new FormData($('#importForm')[0]);
+		var data1 = new FormData($('#importForm')[1]);
+		alert(formData)
+	});
+	
 	function reloadgrid() {
 		// 把表单数据转换成json对象
 		var formData = $('#searchForm').serializeJSON();

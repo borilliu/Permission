@@ -2,9 +2,43 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>塘堰信息上传</title>
+<title>堰塘上传</title>
+<link rel="stylesheet" type="text/css" href="ui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="ui/themes/icon.css">
+<script type="text/javascript" src="ui/jquery.min.js"></script>
+<script type="text/javascript" src="ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="ui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="ui/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="js/import.js"></script>
+<script type="text/javascript">
+	//用于search.js自动补全
+	var _url = 'pond/searchPondName';
+	var _value = 'pondname';
+	//用于crud.js的esayui初始参数
+	var name = "pond/pond";
+	var title = '堰塘管理';
+	var idField = 'pond_id';
+</script>
 </head>
-<body>
-塘堰信息上传
+<body class="easyui-layout">
+	<!--搜索区  -->
+	<div data-options="region:'north',title:'导入'" style="padding: 20px; background-color: #eee; height: 200px">
+		<form id="importForm" enctype="multipart/form-data">
+			<table cellpadding="5">
+				<tr>
+					<td>数据所属乡镇 ：</td>
+					<td><input id="cc_region" class="easyui-combobox" name="region_id" value="" panelHeight="180" width ="120"></td>
+				</tr>
+				<tr>	
+					<td>导入文件:</td>
+					<td><input type="file" name="file"></td>
+				</tr>	
+				<tr>
+					<td><a class="easyui-linkbutton"	data-options="iconCls:'icon-ok'" id="btnImp">导入</a></td>
+					<td></td>
+				</tr>	
+			</table>
+		</form>
+	</div>
 </body>
 </html>
