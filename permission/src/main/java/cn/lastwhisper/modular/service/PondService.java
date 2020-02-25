@@ -26,5 +26,5 @@ public interface PondService {
 
 	public void export(OutputStream os, Pond pond);
 
-	public void doImport(InputStream is) throws IOException;
+	public void doImport(Pond pond,InputStream is) throws IOException;
 }

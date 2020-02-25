@@ -3,6 +3,8 @@ package cn.lastwhisper.modular.service.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -10,7 +12,10 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -23,8 +28,11 @@ import com.github.pagehelper.PageInfo;
 import cn.lastwhisper.core.annotation.LogAnno;
 import cn.lastwhisper.core.util.EasyUIDataGridResult;
 import cn.lastwhisper.core.util.GlobalResult;
+import cn.lastwhisper.modular.mapper.ManagerMapper;
 import cn.lastwhisper.modular.mapper.PondMapper;
+import cn.lastwhisper.modular.pojo.Manager;
 import cn.lastwhisper.modular.pojo.Pond;
+import cn.lastwhisper.modular.pojo.User;
 import cn.lastwhisper.modular.service.PondService;
 
 @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
@@ -32,7 +40,8 @@ import cn.lastwhisper.modular.service.PondService;
 public class PondServiceImpl implements PondService {
 	@Autowired
 	private PondMapper pondMapper;
-
+	@Autowired	
+	private ManagerMapper managerMapper;
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public EasyUIDataGridResult findPondlistByPage(Pond pond, Integer page, Integer rows) {
@@ -111,65 +120,7 @@ public class PondServiceImpl implements PondService {
 		}
 
 	}
-//
-//	/**
-//	 * 数据导入
-//	 */
-//	@LogAnno(operateType = "excel导入堰塘信息")
-//	@Override
-//	public void doImport(InputStream is) throws IOException {
-//		HSSFWorkbook wb = null;
-//		try {
-//			wb = new HSSFWorkbook(is);
-//			HSSFSheet sheet = wb.getSheetAt(0);
-//			// 读取数据
-//			// 最后一行的行号
-//			int lastRow = sheet.getLastRowNum();
-//			Pond pond = null;
-//			for (int i = 1; i <= lastRow; i++) {
-//				// 账号
-//				pond = new Pond();
-//				pond.setPond_id(sheet.getRow(i).getCell(0).getStringCellValue());
-//				// 判断是否已经存在，通过账号来判断
-//				List<Pond> list = pondMapper.findPondFuzzyName(pond.getPondname());
-//				if (list.size() > 0) {
-//					// 说明存在堰塘，需要更新
-//					pond = list.get(0);
-//				}
-//				HSSFCell cell = null;
-//				// 密码
-//				cell = sheet.getRow(i).getCell(1);
-//				cell.setCellType(CellType.STRING);
-//
-//				// 真实姓名
-//				cell = sheet.getRow(i).getCell(2);
-//				cell.setCellType(CellType.STRING);
-//				pond.setPondname(sheet.getRow(i).getCell(2).getStringCellValue());
-//				// 出生日期
-//				cell = sheet.getRow(i).getCell(3);
-//				cell.setCellType(CellType.NUMERIC);
-//				pond.setVillage_addr(sheet.getRow(i).getCell(3).getStringCellValue());
-//				if (list.size() == 0) {
-//					// 说明不存在堰塘信息，需要新增
-//					pondMapper.insertPond(pond);
-//				} else {
-//					// 更新堰塘信息
-//					pondMapper.updatePond(pond);
-//				}
-//			}
-//		} finally {
-//			if (null != wb) {
-//				try {
-//					wb.close();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//	}
-//
-//
-//
+
 //	@LogAnno(operateType = "添加堰塘")
 //	@RequiresPermissions("堰塘管理")
 //	@Override
@@ -238,10 +189,140 @@ public class PondServiceImpl implements PondService {
 		return null;
 	}
 
+	@LogAnno(operateType = "导入堰塘信息")
 	@Override
-	public void doImport(InputStream is) throws IOException {
-		// TODO Auto-generated method stub
+	public void doImport(Pond pondCrit,InputStream is) throws IOException {
+		String regionId = pondCrit.getRegion_id();
+		HSSFWorkbook wb = null;
+		try {
+			wb = new HSSFWorkbook(is);
+			HSSFSheet sheet = wb.getSheetAt(0);
+			int lastRow = sheet.getLastRowNum();
+			Pond pond = null;
+			for (int i = 1; i <= lastRow; i++) {
+				HSSFRow row =sheet.getRow(i);
+				for (Cell cell : row) {
+					cell.setCellType(CellType.STRING);
+				}
+				pond = new Pond();
+				pond.setDate_from(99887766);// TODO, replace with data date.
+				pond.setRegion_id(pondCrit.getRegion_id());
+				pond.setPondname(default_StringValue(row.getCell(2)));
+				pond.setVillage_addr(default_StringValue(row.getCell(3)));
+				
+				//堰塘数据信息
+				BigDecimal pondarea=new BigDecimal(default_NumberString(row.getCell(4)));
+				BigDecimal pondage=new BigDecimal(default_NumberString(row.getCell(5)));
+				BigDecimal cover_area=new BigDecimal(default_NumberString(row.getCell(6)));
+				Integer benifit_farmers=new Integer(default_NumberString(row.getCell(7)));
+				pond.setPondarea(pondarea);
+				pond.setPondage(pondage);
+				pond.setCover_area(cover_area);
+				pond.setBenifit_farmers(benifit_farmers);
+				
+				//堰塘地理位置西悉尼
+				Integer lng_deg = new Integer(default_NumberString(row.getCell(8)));
+				Integer lng_min = new Integer(default_NumberString(row.getCell(9)));
+				Integer lng_sec = new Integer(default_NumberString(row.getCell(10)));
+				Integer lat_deg = new Integer(default_NumberString(row.getCell(11)));
+				Integer lat_min = new Integer(default_NumberString(row.getCell(12)));
+				Integer lat_sec = new Integer(default_NumberString(row.getCell(13)));
+				
 		
+				pond.setLng_deg(lng_deg);
+				pond.setLng_min(lng_min);
+				pond.setLng_sec(lng_sec);
+				pond.setLat_deg(lat_deg);
+				pond.setLat_min(lat_min);
+				pond.setLat_sec(lat_sec);
+				
+				//镇管理员
+				String managerName = default_StringValue(row.getCell(14)).trim();
+				List<Manager> managerList = managerMapper.findManagerByNameRegion(regionId, managerName);
+				if(managerList.size() != 1) {
+					throw new IOException("乡镇塘长数据异常,请检查数据！ 堰塘数据初始编号"+ default_StringValue(row.getCell(0)));
+				}else {
+					String town_manager_id = managerList.get(0).getManager_id();
+					pond.setTown_manager_id(town_manager_id);
+				}
+					
+				
+				
+				//村级塘长
+				pond.setVillage_manager_name(default_StringValue(row.getCell(17)));
+				pond.setVillage_manager_title(default_StringValue(row.getCell(18)));
+				pond.setVillage_manager_tel(default_StringValue(row.getCell(19)));
+				//保洁员
+				pond.setVillage_cleaner_name(default_StringValue(row.getCell(20)));
+				pond.setVillage_cleaner_title(default_StringValue(row.getCell(21)));
+				pond.setVillage_cleaner_tel(default_StringValue(row.getCell(22)));
+				
+				//监督员
+				pond.setPond_inspector(default_StringValue(row.getCell(23)));
+				pond.setPond_inspector_title(default_StringValue(row.getCell(24)));
+				pond.setPond_inspector_tel(default_StringValue(row.getCell(25)));
+				
+				pond.setStatus_zhipai(defaultStatusValue(row.getCell(26)));
+				pond.setStatus_piaofu(defaultStatusValue(row.getCell(27)));
+				pond.setStatus_laji(defaultStatusValue(row.getCell(28)));
+				pond.setStatus_govern(defaultStatusValue(row.getCell(29)));
+				pond.setPond_maintainance(defaultStatusValue(row.getCell(30)));
+				
+				pond.setRemark("");
+				pond.setStatus(1);
+				
+/*				cell = sheet.getRow(i).getCell(2);
+				cell.setCellType(CellType.STRING);
+				pond.setUser_name(sheet.getRow(i).getCell(2).getStringCellValue());
+				// 出生日期
+				cell = sheet.getRow(i).getCell(3);
+				cell.setCellType(CellType.NUMERIC);
+//				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//				Date birthday = df.parse(sheet.getRow(i).getCell(3).getDateCellValue());
+				pond.setUser_birthday(sheet.getRow(i).getCell(3).getDateCellValue());
+				*/
+				
+				pondMapper.insertPond(pond);
+			}
+		} finally {
+			if (null != wb) {
+				try {
+					wb.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
-
-}
+	private String default_NumberString(Cell cell){
+			if(null == cell || "".equals(cell.getStringCellValue())) {
+				return "0";
+			}else {
+				return cell.getStringCellValue();
+			}
+				
+	}
+	private String default_StringValue(Cell cell){
+		if(null == cell) {
+			return "";
+		}else {
+			return cell.getStringCellValue();
+		}
+			
+	}
+	private Integer defaultStatusValue(Cell cell) {
+		if(null == cell || "".equals(cell.getStringCellValue())) {
+			return 2;
+		}else if (
+					"是".equals(cell.getStringCellValue() )||
+					"正常".equals(cell.getStringCellValue())||
+					"已整治".endsWith(cell.getStringCellValue())
+				) {
+			return 1;
+		}else {
+			return 0;
+		}
+			
+			
+	}
+}	

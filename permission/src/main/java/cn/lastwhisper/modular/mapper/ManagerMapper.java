@@ -25,6 +25,8 @@ public interface ManagerMapper {
 	List<Region> selectRegionById(@Param("region_id") String region_id);
 	
 	List<Manager> findManagerByRegionId(@Param("region_id") String region_id);
+	
+	List<Manager> findManagerByNameRegion(@Param("region_id") String region_id,@Param("manager_name") String manager_name);
 
 	Integer insertManager(Manager manager);
 

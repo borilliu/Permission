@@ -45,7 +45,12 @@ public class ManagerServiceImpl implements ManagerService {
 	public List<Manager> findManagerByRegionId(String region_id) {
 		return managerMapper.findManagerByRegionId(region_id);
 	}
-
+	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Override
+	public List<Manager> findManagerByNameRegion(String region_id, String manager_name) {
+		return managerMapper.findManagerByNameRegion(region_id,manager_name);
+	}	
 	@Override
 	public Region findRegionTree() {
 		Region region;
@@ -97,6 +102,8 @@ public class ManagerServiceImpl implements ManagerService {
 		region.setRegion_order(src.getRegion_order());
 		region.setRegions(new ArrayList<Region>());
 		return region;
-	}	
+	}
+
+
 
 }

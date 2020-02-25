@@ -47,10 +47,24 @@ $(function() {
 	
 	// 点击保存按钮
 	$('#btnImp').bind('click', function() {
-		var formData = $('#importForm').serializeJSON();
-		var data = new FormData($('#importForm')[0]);
-		var data1 = new FormData($('#importForm')[1]);
-		alert(formData)
+		var formdata = new FormData($('#importForm')[0]);
+		var regionId = formdata.get("region_id");
+		$.ajax({
+			url : "pond/ponddoImport",
+			data : formdata,
+			type : 'post',
+			processData : false,
+			contentType : false,
+			dataType : 'json',
+			success : function(data) {
+				$.messager.alert('提示', data.msg,
+						'info', function() {
+							if (data.status==200) {
+								$('#importForm').form('clear');
+							}
+						});
+			}
+		});
 	});
 	
 	function reloadgrid() {

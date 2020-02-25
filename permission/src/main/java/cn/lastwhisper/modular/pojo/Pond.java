@@ -33,6 +33,14 @@ public class Pond  implements Serializable{
 	 private String  village_cleaner_name;
 	 private String  village_cleaner_title; 
 	 private String  village_cleaner_tel;
+	 private String  pond_inspector;
+	 private String  pond_inspector_title; 
+	 private String  pond_inspector_tel;
+	 private Integer  status_zhipai ;
+	 private Integer  status_piaofu ;
+	 private Integer  status_laji ;
+	 private Integer  status_govern ;
+	 private Integer  pond_maintainance ;
 	 private String  remark ;
 	 private Integer  status ;
 	 private Timestamp update_time ;
@@ -203,6 +211,57 @@ public class Pond  implements Serializable{
 	}
 	public void setManager(Manager manager) {
 		this.manager = manager;
+	}
+	public String getPond_inspector() {
+		return pond_inspector;
+	}
+	public void setPond_inspector(String pond_inspector) {
+		this.pond_inspector = pond_inspector;
+	}
+	public String getPond_inspector_title() {
+		return pond_inspector_title;
+	}
+	public void setPond_inspector_title(String pond_inspector_title) {
+		this.pond_inspector_title = pond_inspector_title;
+	}
+	public String getPond_inspector_tel() {
+		return pond_inspector_tel;
+	}
+	public void setPond_inspector_tel(String pond_inspector_tel) {
+		this.pond_inspector_tel = pond_inspector_tel;
+	}
+	public Integer getStatus_zhipai() {
+		return status_zhipai;
+	}
+	public void setStatus_zhipai(Integer status_zhipai) {
+		this.status_zhipai = status_zhipai;
+	}
+	public Integer getStatus_piaofu() {
+		return status_piaofu;
+	}
+	public void setStatus_piaofu(Integer status_piaofu) {
+		this.status_piaofu = status_piaofu;
+	}
+	public Integer getStatus_laji() {
+		return status_laji;
+	}
+	public void setStatus_laji(Integer status_laji) {
+		this.status_laji = status_laji;
+	}
+	public Integer getStatus_govern() {
+		return status_govern;
+	}
+	public void setStatus_govern(Integer status_govern) {
+		this.status_govern = status_govern;
+	}
+	public Integer getPond_maintainance() {
+		return pond_maintainance;
+	}
+	public void setPond_maintainance(Integer pond_maintainance) {
+		this.pond_maintainance = pond_maintainance;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

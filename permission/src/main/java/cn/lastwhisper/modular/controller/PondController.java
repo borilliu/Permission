@@ -86,13 +86,13 @@ public class PondController {
 	 */
 	@RequestMapping(value = "/pond/ponddoImport", method = RequestMethod.POST)
 	@ResponseBody
-	public GlobalResult userdoImport(MultipartFile file) {
+	public GlobalResult userdoImport(Pond pond,MultipartFile file) {
 		try {
-			pondService.doImport(file.getInputStream());
+			pondService.doImport(pond,file.getInputStream());
 			return new GlobalResult(200, "文件上传成功", null);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return new GlobalResult(400, "文件上传失败", null);
+			return new GlobalResult(400, "文件上传失败", e.getMessage());
 		}
 	}
 }

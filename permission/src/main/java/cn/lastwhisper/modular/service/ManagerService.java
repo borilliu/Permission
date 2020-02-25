@@ -18,6 +18,7 @@ public interface ManagerService {
 	List<Region> findAllRegionList();
 	
 	List<Manager> findManagerByRegionId(String region_id);
+	List<Manager> findManagerByNameRegion(String region_id,String manager_name);
 
 	Region findRegionTree();
 

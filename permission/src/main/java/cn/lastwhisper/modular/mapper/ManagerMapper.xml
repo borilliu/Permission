@@ -50,6 +50,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findManagerByRegionId" parameterType="java.lang.String" resultType="manager">
 		select * from manager where region_id = #{region_id}  
 	</select>
+<!-- 根据id查询菜单 -->
+	<select id="findManagerByNameRegion" parameterType="java.lang.String" resultType="manager">
+		select * from manager where region_id = #{region_id} and manager_name = #{manager_name}
+	</select>	
 <!-- 插入数据 -->
 	<insert id="insertRegion" parameterType="region">
 		insert into region(('region_id','region_code','region_name','region_order','pid','is_parent'))

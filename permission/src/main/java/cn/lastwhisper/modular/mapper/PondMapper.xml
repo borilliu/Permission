@@ -70,5 +70,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where
 		pondname like concat('%', #{pondname}, '%') 
 	</select>
-
+<!-- 添加用户 -->
+	<insert id="insertPond" parameterType="pond" useGeneratedKeys="true" keyProperty="pond_id">
+	INSERT INTO pond(
+		date_from,region_id,village_addr,pondname,pondarea,pondage,cover_area,benifit_farmers,
+		lng_deg,lng_min,lng_sec,lat_deg,lat_min,lat_sec,town_manager_id,village_manager_name,village_manager_title,village_manager_tel,
+		village_cleaner_name,village_cleaner_title,village_cleaner_tel,pond_inspector,pond_inspector_title,pond_inspector_tel,
+		status_zhipai,status_piaofu,status_laji,status_govern,pond_maintainance,remark,status
+	)values(
+		 #{date_from},#{region_id},#{village_addr},#{pondname},#{pondarea},#{pondage},#{cover_area},#{benifit_farmers},
+		#{lng_deg},#{lng_min},#{lng_sec},#{lat_deg},#{lat_min},#{lat_sec},#{town_manager_id},#{village_manager_name},#{village_manager_title},#{village_manager_tel},
+		#{village_cleaner_name},#{village_cleaner_title},#{village_cleaner_tel},#{pond_inspector},#{pond_inspector_title},#{pond_inspector_tel},
+		#{status_zhipai},#{status_piaofu},#{status_laji},#{status_govern},#{pond_maintainance},#{remark},#{status}
+	)
+	</insert>
 </mapper>
