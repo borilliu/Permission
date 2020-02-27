@@ -45,7 +45,7 @@ $(function() {
 		$('#searchForm').form('clear');
 	});
 	
-	// 点击保存按钮
+	// 点击导出按钮
 	$('#btnImp').bind('click', function() {
 		var formdata = new FormData($('#importForm')[0]);
 		var regionId = formdata.get("region_id");
@@ -66,7 +66,11 @@ $(function() {
 			}
 		});
 	});
-	
+	$('#btnExp').bind('click', function() {
+		var formData = $('#exportForm').serializeJSON();
+		// 下载文件
+		$.download("pond/pondexport", formData);
+	})	
 	function reloadgrid() {
 		// 把表单数据转换成json对象
 		var formData = $('#searchForm').serializeJSON();

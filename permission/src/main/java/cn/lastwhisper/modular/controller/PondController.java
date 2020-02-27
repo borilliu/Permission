@@ -1,6 +1,8 @@
 package cn.lastwhisper.modular.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -66,7 +68,18 @@ public class PondController {
 	@RequestMapping(value = "/pond/pondexport", method = RequestMethod.POST)
 	@ResponseBody
 	public void pondexport(Pond pond, HttpServletResponse response) {
-		String filename = "PondsList_exportedBy" + UserUtils.getSubjectUser().getUser_name() + ".xls";
+		StringBuffer fileSb= new StringBuffer();
+		fileSb.append("PondsList_");
+		if(!"".equals(pond.getPond_id())) {
+			fileSb.append(pond.getRegion_id());
+		}else {
+			fileSb.append("All");
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_SSS");
+		fileSb.append("_"+sdf.format(new Date()));
+		fileSb.append(".xls");
+		String filename= fileSb.toString();
+		//String filename = "PondsList_exportedBy" + UserUtils.getSubjectUser().getUser_name() + ".xls";
 		// 响应对象
 		try {
 			// 设置输出流,实现下载文件

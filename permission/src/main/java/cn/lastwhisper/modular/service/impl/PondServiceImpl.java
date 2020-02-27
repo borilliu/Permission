@@ -78,16 +78,25 @@ public class PondServiceImpl implements PondService {
 		HSSFSheet sheet = wk.createSheet("堰塘信息");
 		HSSFRow row = sheet.createRow(0);
 		// 表头
-		String[] headerName = { "编号", "堰塘名称", "所属乡镇 ", "详细地址 ","堰塘面积（平方米)","蓄水量（立方米)","灌溉面积（平方米）","镇级塘长姓名","镇级塘长职务","镇级塘长电话"};
-		// 列宽
-		int[] columnWidths = { 2000, 6000, 4000, 6000, 3000, 3000, 3000, 5000, 5000, 2000 };
+		String[][] headerName = {   
+									{"编号","2000"}, {"堰塘名称","6000"},{"所属乡镇 ","4000"},{"详细地址 ","6000"},
+									{"堰塘面积（平方米)","3000"},{"蓄水量（立方米)","3000"},{"灌溉面积（平方米）","3000"},
+									{"经度-度","2000"},{"经度-分","2000"},{"经度-秒","2000"},{"纬度-度","2000"},{"纬度-分","2000"},{"纬度-秒","2000"},
+									{"镇级塘长姓名","3000"},{"镇级塘长职务","5000"},{"镇级塘长电话","5000"},
+									{"村级塘长姓名","3000"},{"村级塘长职务","5000"},{"村级塘长电话","5000"},
+									{"保洁员姓名","3000"},{"保洁员职务","5000"},{"保洁员电话","5000"},
+									{"监督员姓名","3000"},{"监督员职务","5000"},{"监督员电话","5000"},
+									{"污水直排","3000"},{"水面漂浮物","3000"},{"岸坡垃圾","3000"},
+									{"整治情况","3000"},{"日常维护","3000"},{"备注","3000"}
+								};
 		HSSFCell cell = null;
 		for (int i = 0; i < headerName.length; i++) {
 			// 创建表头单元格
 			cell = row.createCell(i);
 			// 向表头单元格写值
-			cell.setCellValue(headerName[i]);
-			sheet.setColumnWidth(i, columnWidths[i]);
+			cell.setCellValue(headerName[i][0]); 
+			int with = new Integer(headerName[i][1]).intValue();
+			sheet.setColumnWidth(i, with);
 		}
 		// 4.向内容单元格写值
 		int i = 1;
@@ -98,13 +107,41 @@ public class PondServiceImpl implements PondService {
 			row.createCell(1).setCellValue(pd.getPondname());
 			row.createCell(2).setCellValue(pd.getRegion().getRegion_name());
 			row.createCell(3).setCellValue(pd.getVillage_addr());
+			
 			row.createCell(4).setCellValue(pd.getPondarea().toString());
 			row.createCell(5).setCellValue(pd.getPondage().toString());
 			row.createCell(6).setCellValue(pd.getCover_area().toString());
-			row.createCell(7).setCellValue(pd.getManager().getManager_name());
-			row.createCell(8).setCellValue(pd.getManager().getManager_title());
-			row.createCell(9).setCellValue(pd.getManager().getManager_contact1());
 			
+			row.createCell(7).setCellValue(pd.getLng_deg());
+			row.createCell(8).setCellValue(pd.getLng_min());
+			row.createCell(9).setCellValue(pd.getLng_sec());
+			row.createCell(10).setCellValue(pd.getLat_deg());
+			row.createCell(11).setCellValue(pd.getLat_min());
+			row.createCell(12).setCellValue(pd.getLat_sec());
+			
+			row.createCell(13).setCellValue(pd.getManager().getManager_name());
+			row.createCell(14).setCellValue(pd.getManager().getManager_title());
+			row.createCell(15).setCellValue(pd.getManager().getManager_contact1());
+			
+			row.createCell(16).setCellValue(pd.getVillage_manager_name());
+			row.createCell(17).setCellValue(pd.getVillage_manager_title());
+			row.createCell(18).setCellValue(pd.getVillage_manager_tel());
+			
+			row.createCell(19).setCellValue(pd.getVillage_cleaner_name());
+			row.createCell(20).setCellValue(pd.getVillage_cleaner_title());
+			row.createCell(21).setCellValue(pd.getVillage_cleaner_tel());
+			
+			row.createCell(22).setCellValue(pd.getPond_inspector());
+			row.createCell(23).setCellValue(pd.getPond_inspector_title());
+			row.createCell(24).setCellValue(pd.getPond_inspector_tel());
+			
+			row.createCell(25).setCellValue(convertStatus(pd.getStatus_zhipai()));
+			row.createCell(26).setCellValue(convertStatus(pd.getStatus_piaofu()));
+			row.createCell(27).setCellValue(convertStatus(pd.getStatus_laji()));
+			
+			row.createCell(28).setCellValue(convertStatus(pd.getStatus_govern()));
+			row.createCell(29).setCellValue(convertStatus(pd.getPond_maintainance()));
+			row.createCell(30).setCellValue(pd.getRemark());
 			i++;
 		}
 		try {
@@ -322,7 +359,15 @@ public class PondServiceImpl implements PondService {
 		}else {
 			return 0;
 		}
-			
-			
 	}
+	private String convertStatus(Integer integer) {
+		if (integer==null) return "";
+		switch (integer) {
+			case 0: return "否";
+			case 1: return "是";
+			case 2: return "";
+			default: return "";
+		}
+	
+	}	
 }	

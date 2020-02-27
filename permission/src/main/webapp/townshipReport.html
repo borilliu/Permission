@@ -2,9 +2,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>乡镇报表页面</title>
+<title>乡镇堰塘报表</title>
+<link rel="stylesheet" type="text/css" href="ui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="ui/themes/icon.css">
+<script type="text/javascript" src="ui/jquery.min.js"></script>
+<script type="text/javascript" src="ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="ui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="ui/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="js/download.js"></script>
+<script type="text/javascript" src="js/import.js"></script>
+<script type="text/javascript">
+	//用于search.js自动补全
+	var _url = 'pond/searchPondName';
+	var _value = 'pondname';
+	//用于crud.js的esayui初始参数
+	var name = "pond/pond";
+	var title = '堰塘报表';
+	var idField = 'pond_id';
+</script>
 </head>
-<body>
-乡镇报表页面
+<body class="easyui-layout">
+	<!--搜索区  -->
+	<div data-options="region:'north',title:'EXCEL报表'" style="padding: 20px; background-color: #eee; height: 200px">
+		<form id="exportForm">
+			<table cellpadding="5">
+				<tr>
+					<td>请选择乡镇 ：</td>
+					<td><input id="cc_region" class="easyui-combobox" name="region_id" value="" panelHeight="180" width ="120"></td>
+				</tr>
+				<tr>
+					<td><a class="easyui-linkbutton"	data-options="iconCls:'icon-excel'" id="btnExp">导 出</a></td>
+					<td></td>
+				</tr>	
+			</table>
+		</form>
+	</div>
 </body>
 </html>
