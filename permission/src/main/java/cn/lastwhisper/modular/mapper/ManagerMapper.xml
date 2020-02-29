@@ -55,70 +55,54 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from manager where region_id = #{region_id} and manager_name = #{manager_name}
 	</select>	
 <!-- 插入数据 -->
-	<insert id="insertRegion" parameterType="region">
-		insert into region(('region_id','region_code','region_name','region_order','pid','is_parent'))
-		 values(
-		<if test='region_id != null and region_id != ""'>
-			#{region_id}
+	<insert id="insertManager" parameterType="manager">
+		INSERT INTO manager(region_id,manager_name,manager_title,manager_contact1,manager_contact2)
+		VALUES( #{region_id}
+		<if test='manager_name != null'>
+			,#{manager_name}
 		</if>
-		<if test='region_id == null or region_id == ""'>
-			null
-		</if>
-		<if test='region_code != null and region_code != ""'>
-			,#{region_code}
-		</if>
-		<if test='region_code == null or region_code == ""'>
+		<if test='manager_name == null'>
 			,null
 		</if>
-		<if test='region_name != null and region_name != "" '>
-			,#{region_name}
+		<if test='manager_title != null'>
+			,#{manager_title}
 		</if>
-		<if test='region_name == null or region_name == ""'>
+		<if test='manager_title == null'>
 			,null
 		</if>
-		<if test='region_order != null and region_order != ""'>
-			,#{region_order}
+		<if test='manager_contact1 != null'>
+			,#{manager_contact1}
 		</if>
-		<if test='region_order == null or region_order == ""'>
+		<if test='manager_contact1 == null'>
 			,null
 		</if>
-		<if test='pid != null and pid != ""'>
-			,#{pid}
+		<if test='manager_contact2 != null'>
+			,#{manager_contact2}
 		</if>
-		<if test='pid == null or pid == ""'>
-			,null
-		</if>
-		<if test='is_parent != null'>
-			,#{is_parent}
-		</if>
-		<if test='is_parent == null'>
+		<if test='manager_contact2 == null'>
 			,null
 		</if>
 		);
 	</insert>
 <!-- 	根据id删除数据-->
 	<update id="deleteManagerById">
-		delete from region_manager where manager_id = #{0}
+		delete from manager where manager_id = #{0}
 	</update>
 <!-- 	根据id修改数据 -->
-	<update id="updateRegionById" parameterType="region">
-		update menu
-		<trim prefix="set" suffixOverrides="," suffix="where region_id = #{region_id}">
-			<if test='menuname != null and menuname != ""'>
-				region_name = #{region_name},
+	<update id="updateManagerById" parameterType="manager">
+		update manager
+		<trim prefix="set" suffixOverrides="," suffix="where manager_id = #{manager_id}">
+			<if test='manager_name != null and manager_name != ""'>
+				manager_name = #{manager_name},
 			</if>
-			<if test='region_code != null and region_code != "" '>
-				url = #{region_code},
+			<if test='manager_title != null and manager_title != "" '>
+				manager_title = #{manager_title},
 			</if>
-			<if test='region_order != null and region_order != ""'>
-				icon = #{region_order},
-			</if>
-			<if test='pid != null and pid != ""'>
-				pid = #{pid},
-			</if>
-			<if test='is_parent != null'>
-				is_parent = #{is_parent}
-			</if>
+			<if test='manager_contact1 != null and manager_contact1 != ""'>
+				manager_contact1 = #{manager_contact1},
+			<if test='manager_contact2 != null and manager_contact2 != ""'>
+				manager_contact2 = #{manager_contact2},
+			</if></if>
 		</trim>
 	</update>
 </mapper>

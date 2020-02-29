@@ -3,7 +3,7 @@ $(function() {
 	// 添加数据对话框
 	$('#insertDlg').dialog({
 		title : '添加数据',
-		width : 360,
+		width : 300,
 		height : 200,
 		closed : true,
 		modal : true,
@@ -24,8 +24,8 @@ $(function() {
 	// 修改数据对话框
 	$('#updateDlg').dialog({
 		title : '修改数据',
-		width : 400,
-		height : 260,
+		width : 300,
+		height : 200,
 		closed : true,
 		modal : true,
 		buttons : [ {
@@ -39,63 +39,6 @@ $(function() {
 			handler : function() {
 				// 关闭对话框
 				$("#updateDlg").dialog('close');
-			}
-		} ]
-	});
-	// 右键菜单
-	$('#mm').menu({
-		onClick : function(item) {
-			var rowData = $('#grid').datagrid('getData').rows[0];
-			switch (item.text) {
-			case '添加':
-				// 获取当前被选中的节点
-				var selected = $('#tt').tree('getSelected');
-				var children = selected.children;
-				if(children.length==0){
-					$.messager.alert("提示", "该菜单目录暂时不支持三级以上的菜单", 'warning');
-				}else{
-					$("#insertDlg").dialog('open');
-				}
-				break;
-			case '修改':
-				$("#updateDlg").dialog('open');
-				// 填充后台数据
-				if (rowData.is_parent == 1) {
-					rowData.is_parent = '是';
-				} else if (rowData.is_parent == 0) {
-					rowData.is_parent = '否';
-				}
-				$('#updateForm').form('load', rowData);
-				break;
-			case '重命名':
-				$("#renameDlg").dialog('open');
-				// 填充后台数据
-				$('#renameForm').form('load', rowData);
-				break;
-			case '删除':
-				deleteData(item.id);
-				break;
-			}
-		}
-	});
-	// 菜单重命名
-	$('#renameDlg').dialog({
-		title : '菜单重命名',
-		width : 250,
-		height : 100,
-		closed : true,
-		modal : true,
-		buttons : [ {
-			text : '保存',
-			handler : function() {
-				// 访问后台数据
-				renameRegion();
-			}
-		}, {
-			text : '关闭',
-			handler : function() {
-				// 关闭对话框
-				$("#renameDlg").dialog('close');
 			}
 		} ]
 	});
@@ -168,36 +111,17 @@ function loadDataGrid(region_id) {
 		url : 'region/regionfindById?region_id=' + region_id,
 		columns : [ [ {
 			field : 'region_id',
-			title : 'ID',
-			width : 100
-		}, {
-			field : 'region_code',
-			title : '编码',
+			title : '乡镇编码',
 			width : 100
 		}, {
 			field : 'region_name',
-			title : '名称',
+			title : '乡镇名称',
 			width : 100
 		}, {
 			field : 'region_order',
 			title : '顺序号',
 			width : 100
-		}, {
-			field : 'pid',
-			title : '上级编号',
-			width : 100,
-		}, {
-			field : 'is_parent',
-			title : '是否为父节点',
-			width : 100,
-			formatter : function(value, rowData, index) {
-				if (rowData.is_parent == 1) {
-					return '是';
-				} else {
-					return '否';
-				}
-			}
-		} ] ],
+		}] ],
 		loading : true,
 		striped : true,
 		rownumbers : true,
@@ -210,11 +134,15 @@ function loadDataGrid(region_id) {
 			handler : function() {
 				// 打开添加窗口
 				var selected = $('#tt').tree('getSelected');
+				
 				var children = selected.children;
 				if(children.length==0){
-					$.messager.alert("提示", "该菜单目录暂时不支持三级以上的菜单", 'warning');
+					$.messager.alert("提示", "不支持在当前新增级别", 'warning');
 				}else{
+					var pid = selected.id;
+					var iniData ={'pid':pid}
 					$("#insertDlg").dialog('open');
+					$('#insertForm').form('load', iniData);
 				}
 			}
 		}, '-', {
@@ -225,12 +153,6 @@ function loadDataGrid(region_id) {
 				if (null != rowData) {
 					// 打开修改窗口
 					$('#updateDlg').dialog('open');
-					// 填充后台数据
-					if (rowData.is_parent == 1) {
-						rowData.is_parent = '是';
-					} else if(rowData.is_parent == 0){
-						rowData.is_parent = '否';
-					}
 					$('#updateForm').form('load', rowData);
 				} else {
 					$.messager.alert("提示", "请选中要修改的行", 'error');
@@ -243,11 +165,7 @@ function loadDataGrid(region_id) {
 				// 删除
 				var rowData = $('#tt').tree('getSelected');
 				if (null != rowData) {
-					if (rowData.id % 100 == 0) {
-						$.messager.alert("提示", "父级菜单不可删除", 'error');
-					} else {
-						deleteData(rowData.id);
-					}
+					deleteData(rowData.id);
 				} else {
 					$.messager.alert("提示", "请选中要删除数据", 'error');
 				}
@@ -256,12 +174,6 @@ function loadDataGrid(region_id) {
 		onDblClickRow : function(rowIndex, rowData) {
 			// 打开修改窗口
 			$('#updateDlg').dialog('open');
-			// 填充后台数据
-			if (rowData.is_parent == 1) {
-				rowData.is_parent = '是';
-			} else if (rowData.is_parent == 0){
-				rowData.is_parent = '否';
-			}
 			$('#updateForm').form('load', rowData);
 		}
 	});
@@ -271,11 +183,7 @@ function loadDataGrid(region_id) {
  * 添加数据
  */
 function insertData() {
-	var rowData = $('#grid').datagrid('getData').rows[0];
-	// 提交添加数据的表单
 	var formData = $('#insertForm').serializeJSON();
-	formData.pid = rowData.menuid;
-	formData.is_parent = rowData.is_parent;
 	$.ajax({
 		type : 'POST',
 		url : 'region/regionadd',
@@ -316,8 +224,8 @@ function deleteData(region_id) {
 							$.messager.alert("提示", data.msg, 'info',function() {
 												if (data.status == 200) {
 													// 刷新表格数据
-//													$('#grid').datagrid('deleteRow', 0);
-//													loadDataGrid();
+													$('#grid').datagrid('deleteRow', 0);
+													loadDataGrid();
 													// 刷新树形菜单
 													loadTree();
 												}

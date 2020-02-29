@@ -3,8 +3,8 @@ $(function() {
 	// 添加数据对话框
 	$('#insertDlg').dialog({
 		title : '添加数据',
-		width : 360,
-		height : 200,
+		width : 350,
+		height : 260,
 		closed : true,
 		modal : true,
 		buttons : [ {
@@ -24,7 +24,7 @@ $(function() {
 	// 修改数据对话框
 	$('#updateDlg').dialog({
 		title : '修改数据',
-		width : 400,
+		width : 350,
 		height : 260,
 		closed : true,
 		modal : true,
@@ -111,16 +111,12 @@ function loadDataGrid(region_id) {
 	$('#grid').datagrid({
 		url : 'manager/findManagerByRegionId?region_id=' + region_id,
 		columns : [ [ {
-			field : 'region_id',
-			title : 'Region ID',
-			width : 100
-		}, {
 			field : 'manager_id',
-			title : 'Manager ID',
+			title : '塘长编号',
 			width : 100
 		}, {
 			field : 'manager_name',
-			title : '名称',
+			title : '塘长姓名',
 			width : 100
 		}, {
 			field : 'manager_title',
@@ -148,12 +144,11 @@ function loadDataGrid(region_id) {
 			handler : function() {
 				// 打开添加窗口
 				var selected = $('#tt').tree('getSelected');
-				var children = selected.children;
-				if(children.length==0){
-					$.messager.alert("提示", "该菜单目录暂时不支持三级以上的菜单", 'warning');
-				}else{
-					$("#insertDlg").dialog('open');
-				}
+				var id = selected.id;
+				var text=selected.text;
+				var newData = {'region_id':id,'region_name':text};
+				$("#insertDlg").dialog('open');
+				$('#insertForm').form('load',newData);
 			}
 		}, '-', {
 			iconCls : 'icon-save',
@@ -164,11 +159,6 @@ function loadDataGrid(region_id) {
 					// 打开修改窗口
 					$('#updateDlg').dialog('open');
 					// 填充后台数据
-					if (rowData.is_parent == 1) {
-						rowData.is_parent = '是';
-					} else if(rowData.is_parent == 0){
-						rowData.is_parent = '否';
-					}
 					$('#updateForm').form('load', rowData);
 				} else {
 					$.messager.alert("提示", "请选中要修改的行", 'error');
@@ -179,16 +169,9 @@ function loadDataGrid(region_id) {
 			text : '删除',
 			handler : function() {
 				// 删除
-				var rowData = $('#tt').tree('getSelected');
-				if (null != rowData) {
-					if (rowData.id % 100 == 0) {
-						$.messager.alert("提示", "父级菜单不可删除", 'error');
-					} else {
-						deleteData(rowData.id);
-					}
-				} else {
-					$.messager.alert("提示", "请选中要删除数据", 'error');
-				}
+				var selected = $('#grid').datagrid('getSelected');
+				del(selected);
+
 			}
 		} ],
 		onDblClickRow : function(rowIndex, rowData) {
@@ -216,7 +199,7 @@ function insertData() {
 	formData.is_parent = rowData.is_parent;
 	$.ajax({
 		type : 'POST',
-		url : 'region/regionadd',
+		url : 'manager/manageradd',
 		data : formData,
 		dataType : 'json',
 		success : function(data) {
@@ -224,9 +207,6 @@ function insertData() {
 				if (data.status == 200) {
 					// 刷新表格数据
 					$('#grid').datagrid('reload');
-					// 刷新树形菜单
-					loadTree();
-					// 关闭对话框
 					$('#insertDlg').dialog('close');
 					// 清除表单数据
 					$('#insertForm').form('clear');
@@ -239,46 +219,32 @@ function insertData() {
 /**
  * 删除数据
  */
-function deleteData(region_id) {
-	var gridData = $('#grid').datagrid('getData').rows[0];
-	$.messager.confirm('警告', '确认要删除“' + gridData.region_name + '”菜单吗?',function(r) {
-				if (r) {
-					$.ajax({
-						type : 'POST',
-						url : 'region/regiondelete',
-						data : {
-							'region_id' : region_id
-						},
-						dataType : 'json',
-						success : function(data) {
-							$.messager.alert("提示", data.msg, 'info',function() {
-												if (data.status == 200) {
-													// 刷新表格数据
-//													$('#grid').datagrid('deleteRow', 0);
-//													loadDataGrid();
-													// 刷新树形菜单
-													loadTree();
-												}
-											});
-						}
+function del(selected) {
+	$.messager.confirm("确认", "确认要删除吗？", function(yes) {
+		if (yes) {
+			$.ajax({
+				url : 'manager/managerdelete',
+				data : selected,
+				dataType : 'json',
+				type : 'post',
+				success : function(rtn) {
+					$.messager.alert("提示", rtn.msg, 'info', function() {
+						// 刷新表格数据
+						$('#grid').datagrid('reload');
 					});
 				}
 			});
+		}
+	});
 }
-
 /**
  * 修改数据
  */
 function updateData() {
 	var formData = $('#updateForm').serializeJSON();
-	if(formData.is_parent == '是'){
-		formData.is_parent = 1;
-	} else{
-		formData.is_parent = 0;
-	}
 	$.ajax({
 		type : 'POST',
-		url : 'region/regionupdate',
+		url : 'manager/managerupdate',
 		data : formData,
 		dataType : 'json',
 		success : function(data) {
@@ -286,8 +252,6 @@ function updateData() {
 				if (data.status == 200) {
 				// 刷新表格数据
 				$('#grid').datagrid('reload');
-				// 刷新树形菜单
-				loadTree();
 				// 关闭对话框
 				$('#updateDlg').dialog('close');
 				// 清除表单数据

@@ -50,19 +50,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 <!-- 插入数据 -->
 	<insert id="insertRegion" parameterType="region">
-		insert into region(('region_id','region_code','region_name','region_order','pid','is_parent'))
+		 INSERT INTO region (region_id,region_code,region_name,region_order,pid,is_parent)
 		 values(
 		<if test='region_id != null and region_id != ""'>
-			#{region_id}
+			#{region_id},#{region_id}
 		</if>
 		<if test='region_id == null or region_id == ""'>
 			null
-		</if>
-		<if test='region_code != null and region_code != ""'>
-			,#{region_code}
-		</if>
-		<if test='region_code == null or region_code == ""'>
-			,null
 		</if>
 		<if test='region_name != null and region_name != "" '>
 			,#{region_name}
@@ -92,27 +86,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 <!-- 	根据id删除数据-->
 	<update id="deleteRegionById">
-		delete from menu where menuid = #{0}
+		delete from region where region_id = #{0}
 	</update>
 <!-- 	根据id修改数据 -->
 	<update id="updateRegionById" parameterType="region">
-		update menu
+		update region
 		<trim prefix="set" suffixOverrides="," suffix="where region_id = #{region_id}">
-			<if test='menuname != null and menuname != ""'>
+			<if test='region_name != null and region_name != ""'>
 				region_name = #{region_name},
 			</if>
-			<if test='region_code != null and region_code != "" '>
-				url = #{region_code},
-			</if>
 			<if test='region_order != null and region_order != ""'>
-				icon = #{region_order},
+				region_order = #{region_order},
 			</if>
-			<if test='pid != null and pid != ""'>
-				pid = #{pid},
-			</if>
-			<if test='is_parent != null'>
-				is_parent = #{is_parent}
-			</if>
+			<if test='is_parent != null and is_parent != ""'>
+				is_parent = #{is_parent},
+			</if>			
 		</trim>
 	</update>
 </mapper>

@@ -3,6 +3,7 @@ package cn.lastwhisper.modular.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import cn.lastwhisper.core.annotation.LogAnno;
 import cn.lastwhisper.core.util.GlobalResult;
 import cn.lastwhisper.core.util.Tree;
 import cn.lastwhisper.modular.mapper.ManagerMapper;
 import cn.lastwhisper.modular.pojo.Manager;
 import cn.lastwhisper.modular.pojo.Region;
 import cn.lastwhisper.modular.service.ManagerService;
+import redis.clients.jedis.Jedis;
 
 
 @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
@@ -72,22 +76,47 @@ public class ManagerServiceImpl implements ManagerService {
 		return region;
 	}
 
+	@LogAnno(operateType = "添加塘长")
+	@RequiresPermissions("塘长管理")
 	@Override
 	public GlobalResult addManager(Manager manager) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer integer = managerMapper.insertManager(manager);
+		if (integer == 0) {
+			return new GlobalResult(400, "塘长添加失败", null);
+		} else {
+			return new GlobalResult(200, "塘长添加成功", null);
+		}
 	}
 
+	@LogAnno(operateType = "删除塘长信息")
+	@RequiresPermissions("塘长管理")
 	@Override
 	public GlobalResult deleteManagerById(String manager_id) {
-		// TODO Auto-generated method stub
-		return null;
+			if (manager_id == null) {
+				return new GlobalResult(400, "塘长id为空，删除失败！", 400);
+			}
+			Integer integer = managerMapper.deleteManagerById(manager_id);
+			if (integer == 0) {
+				return new GlobalResult(400, "塘长删除失败", null);
+			} else {
+		
+				return new GlobalResult(200, "塘长删除成功", null);
+			} 
 	}
 
+	@LogAnno(operateType = "更新堰塘信息")
+	@RequiresPermissions("塘长管理")
 	@Override
 	public GlobalResult updateManagerById(Manager manager) {
-		// TODO Auto-generated method stub
-		return null;
+		if (manager == null) {
+			return new GlobalResult(400, "塘长信息为空，修改失败！", 400);
+		}
+		Integer integer = managerMapper.updateManagerById(manager);
+		if (integer == 0) {
+			return new GlobalResult(400, "塘长信息更新失败", null);
+		} else {
+			return new GlobalResult(200, "塘长信息更新成功", null);
+		}
 	}
 
 	@Override

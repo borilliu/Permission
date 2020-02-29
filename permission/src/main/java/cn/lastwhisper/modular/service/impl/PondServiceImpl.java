@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -158,56 +159,6 @@ public class PondServiceImpl implements PondService {
 
 	}
 
-//	@LogAnno(operateType = "添加堰塘")
-//	@RequiresPermissions("堰塘管理")
-//	@Override
-//	public GlobalResult addPond(Pond pond) {
-//		if (pond == null) {
-//			return new GlobalResult(400, "堰塘信息为空，添加失败！", null);
-//		}
-//		Integer integer = pondMapper.insertPond(pond);
-//		if (integer == 0) {
-//			return new GlobalResult(400, "堰塘添加失败", null);
-//		} else {
-//			return new GlobalResult(200, "堰塘添加成功", null);
-//		}
-//	}
-// 
-//	@LogAnno(operateType = "更新堰塘信息")
-//	@RequiresPermissions("堰塘管理")
-//	@Override
-//	public GlobalResult updatePond(Pond pond) {
-//		if (pond == null) {
-//			return new GlobalResult(400, "堰塘信息为空，修改失败！", 400);
-//		}
-//		Integer integer = pondMapper.updatePond(pond);
-//		if (integer == 0) {
-//			return new GlobalResult(400, "堰塘信息更新失败", null);
-//		} else {
-//			return new GlobalResult(200, "堰塘信息更新成功", null);
-//		}
-//	}
-//
-//	@LogAnno(operateType = "删除堰塘信息")
-//	@RequiresPermissions("堰塘管理")
-//	@Override
-//	public GlobalResult deletePond(String pond_id) {
-//		try {
-//			if (pond_id == null) {
-//				return new GlobalResult(400, "堰塘id为空，添加失败！", 400);
-//			}
-//			Integer integer = pondMapper.deletePondById(pond_id);
-//			if (integer == 0) {
-//				return new GlobalResult(400, "堰塘删除失败", null);
-//			} else {
-//
-//				return new GlobalResult(200, "堰塘删除成功", null);
-//			}
-//		} finally {
-//		}
-//
-//	}
-
 	@Override
 	public GlobalResult addPond(Pond pond) {
 		// TODO Auto-generated method stub
@@ -242,7 +193,10 @@ public class PondServiceImpl implements PondService {
 					cell.setCellType(CellType.STRING);
 				}
 				pond = new Pond();
-				pond.setDate_from(99887766);// TODO, replace with data date.
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+				String dtStr=sdf.format(new java.util.Date());
+				Integer dtFrom = new Integer(dtStr);
+				pond.setDate_from(dtFrom);
 				pond.setRegion_id(pondCrit.getRegion_id());
 				pond.setPondname(default_StringValue(row.getCell(2)));
 				pond.setVillage_addr(default_StringValue(row.getCell(3)));
@@ -257,7 +211,7 @@ public class PondServiceImpl implements PondService {
 				pond.setCover_area(cover_area);
 				pond.setBenifit_farmers(benifit_farmers);
 				
-				//堰塘地理位置西悉尼
+				//堰塘地理位置
 				Integer lng_deg = new Integer(default_NumberString(row.getCell(8)));
 				Integer lng_min = new Integer(default_NumberString(row.getCell(9)));
 				Integer lng_sec = new Integer(default_NumberString(row.getCell(10)));

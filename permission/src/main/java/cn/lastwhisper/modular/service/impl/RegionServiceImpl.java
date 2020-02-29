@@ -32,11 +32,6 @@ private static Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
 	
 	@Autowired
 	private RegionMapper regionMapper;
-
-//	@Autowired
-//	private Jedis jedis;
-	@Autowired
-	private JedisPool jedisPool;
 	
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	@Override
@@ -57,45 +52,44 @@ private static Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
 		return regionMapper.selectRegion(pid);
 	}
 
-	@LogAnno(operateType = "添加Region")
+	@LogAnno(operateType = "添加乡镇")
 	@Override
 	public GlobalResult addRegion(Region region) {
-		// 设置默认添加的菜单的状态为使用中
 		Integer insertCount = regionMapper.insertRegion(region);
 		if (insertCount != null && insertCount > 0) {
 			// 更新标签为父标签
-			Region reg = new Region();
-			reg.setRegion_id(region.getPid());
-			reg.setIs_parent(1);
-			if (200 == updateRegionById(reg).getStatus()) {
-				batchDel("regions");
-				return new GlobalResult(200, "数据添加成功", null);
-			} else {
-				return new GlobalResult(400, "数据添加失败", null);
+			List<Region> regList = regionMapper.selectRegionById(region.getPid());
+			if( regList.get(0).getIs_parent()!=1) {
+				Region reg = new Region();
+				reg.setRegion_id(region.getPid());
+				reg.setIs_parent(1);
+				Integer upStatue =updateRegionById(reg).getStatus();
+				if (200 == upStatue) {
+					return new GlobalResult(200, "数据添加成功", null);
+				} else {
+					return new GlobalResult(400, "数据添加失败", null);
+				}
 			}
-		} else {
-			return new GlobalResult(400, "数据添加失败", null);
-		}
+		} 
+		return new GlobalResult(200, "数据添加成功", null);
 	}
 
-	@LogAnno(operateType = "删除Region")
+	@LogAnno(operateType = "删除乡镇")
 	@Override
 	public GlobalResult deleteRegionById(String region_id) {
 		Integer deleteCount = regionMapper.deleteRegionById(region_id);
 		if (deleteCount != null && deleteCount > 0) {
-			batchDel("regions");
 			return new GlobalResult(200, "数据删除成功", null);
 		} else {
 			return new GlobalResult(400, "数据删除失败", null);
 		}
 	}
 
-	@LogAnno(operateType = "更新Region")
+	@LogAnno(operateType = "更新乡镇")
 	@Override
 	public GlobalResult updateRegionById(Region region) {
 		Integer updateCount = regionMapper.updateRegionById(region);
 		if (updateCount != null && updateCount > 0) {
-			batchDel("regions");
 			return new GlobalResult(200, "数据修改成功", null);
 		} else {
 			return new GlobalResult(400, "数据修改失败", null);
@@ -104,12 +98,7 @@ private static Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
 
 	@Override
 	public Region findRegionByUserid(Integer userid) {
-		// 从缓存中读取数据
-		Jedis jedis = jedisPool.getResource();
 		Region region;
-		try {
-			String easyuiMenusJson = jedis.get("menusEasyui_" + userid);
-			if (easyuiMenusJson == null) {
 				// 获取根菜单
 				List<Region> root = regionMapper.selectRegion("-1");
 				// 用户下的菜单集合 找数据库
@@ -145,66 +134,15 @@ private static Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
 						region.getRegions().add(_m1);
 					}
 				}
-				logger.debug("从数据库读取，设置缓存");
-				//			System.out.println("从数据库读取，设置缓存");
-				jedis.set("menusEasyui_" + userid, JSON.toJSONString(region));
-			} else {
-				region = JSON.parseObject(easyuiMenusJson, Region.class);
-				//			menu = JSON.parseArray(easyuiMenusJson, Menu.class).get(0);
-				//			System.out.println("从缓存读取");
-				logger.debug("从缓存读取");
-			} 
-		} finally {
-			if(jedis!=null)jedis.close();
-		}
+	
 		return region;
 	}
 
 	@Override
 	public List<Region> findRegionListByUserid(Integer userid) {
-		Jedis jedis = jedisPool.getResource();
-		List<Region> regionList;
-		try {
-			String regionListJson = jedis.get("regionsList_" + userid);
-			regionList = null;
-			if (regionListJson == null) {
-				// 1.从数据库中查出来，放入缓存中
-				regionList = regionMapper.selectRegionByUserid(userid);
-				jedis.set("regionsList_" + userid, JSON.toJSONString(regionList));
-				logger.debug("从数据库中查询RegionList");
-			} else {
-				// 2.直接从缓存中拿
-				logger.debug("从缓存中查询RegionList" + regionListJson);
-				regionList = JSON.parseArray(regionListJson, Region.class);
-			} 
-		} finally {
-			if(jedis!=null) {
-				jedis.close();
-			}
-		}
-		return regionList;
+		return regionMapper.selectRegionByUserid(userid);
 	}
 
-	/**
-	 * 根据key前缀批量删除缓存
-	 * 
-	 * @param key
-	 * @return
-	 */
-	private void batchDel(String key) {
-		Jedis jedis = jedisPool.getResource();
-		try {
-			Set<String> set = jedis.keys(key + "*");
-			Iterator<String> it = set.iterator();
-			while (it.hasNext()) {
-				String keyStr = it.next();
-				jedis.del(keyStr);
-			}
-		} catch (Exception e) {
-		}finally {
-			if(jedis!=null)jedis.close();
-		}
-	}
 
 	/**
 	 * 

@@ -26,7 +26,6 @@ public class ManagerController {
 	@RequestMapping(value="/manager/regionlist")
 	@ResponseBody
 	public List<Tree> findAll() {
-		System.out.print("+++++++++##################&&&&&&&&&&---------");
 		return managerService.findRegionList(); 
 	}
 	
