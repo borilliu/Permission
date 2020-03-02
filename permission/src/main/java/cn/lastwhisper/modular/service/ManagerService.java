@@ -15,6 +15,8 @@ public interface ManagerService {
 
 	List<Region> findRegionById(String region_id);
 	
+	Manager findManagerById(String manager_id);
+	
 	List<Region> findAllRegionList();
 	
 	List<Manager> findManagerByRegionId(String region_id);

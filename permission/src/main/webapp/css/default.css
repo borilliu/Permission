@@ -41,3 +41,7 @@ a:hover{ color:Red; text-decoration:underline;}
 
 
 .icon-arrow{ background:url('../images/arrow.gif') no-repeat right;}
+
+.textbox-short {
+  width: 25px;
+}

@@ -46,6 +46,12 @@ public class ManagerServiceImpl implements ManagerService {
 	
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	@Override
+	public Manager findManagerById(String manager_id) {
+		return managerMapper.findManagerById(manager_id);
+	}	
+	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Override
 	public List<Manager> findManagerByRegionId(String region_id) {
 		return managerMapper.findManagerByRegionId(region_id);
 	}

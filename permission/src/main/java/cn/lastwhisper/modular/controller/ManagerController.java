@@ -36,6 +36,12 @@ public class ManagerController {
 		return managerService.findRegionById(region_id);
 	}
 
+	@RequestMapping("/manager/findManagerById")
+	@ResponseBody
+	public Manager findManagerById(String manager_id) {
+		return managerService.findManagerById(manager_id);
+	}
+	
 	@RequestMapping("/manager/findManagerByRegionId")
 	@ResponseBody
 	public List<Manager> findManagerByRegionId(String region_id) {

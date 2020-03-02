@@ -177,12 +177,6 @@ function loadDataGrid(region_id) {
 		onDblClickRow : function(rowIndex, rowData) {
 			// 打开修改窗口
 			$('#updateDlg').dialog('open');
-			// 填充后台数据
-			if (rowData.is_parent == 1) {
-				rowData.is_parent = '是';
-			} else if (rowData.is_parent == 0){
-				rowData.is_parent = '否';
-			}
 			$('#updateForm').form('load', rowData);
 		}
 	});
@@ -192,11 +186,11 @@ function loadDataGrid(region_id) {
  * 添加数据
  */
 function insertData() {
-	var rowData = $('#grid').datagrid('getData').rows[0];
+	//var rowData = $('#grid').datagrid('getData').rows[0];
 	// 提交添加数据的表单
 	var formData = $('#insertForm').serializeJSON();
-	formData.pid = rowData.menuid;
-	formData.is_parent = rowData.is_parent;
+	//formData.pid = rowData.menuid;
+	//formData.is_parent = rowData.is_parent;
 	$.ajax({
 		type : 'POST',
 		url : 'manager/manageradd',

@@ -7,6 +7,7 @@ var listParam = "";
 var saveParam = "";
 $(function() {
 	// 加载表格数据
+	setEditReginBox();
 	$('#grid').datagrid({
 		url : name + 'listByPage' + listParam,
 		idField : idField,//指明哪一个字段是标识字段。
@@ -85,7 +86,19 @@ $(function() {
 		modal : true
 	// 模式窗口
 	});
+	
+	// 点击关闭按钮	
+	$('#btnClose').bind('click', function() {
+		$('#editDlg').dialog('close');
+		
+	});
 
+	$("#cc_town_manager").combobox({
+		onChange: function (newV,oldV) {
+			cc_managerChange(newV);
+		}
+	});
+	
 	// 点击保存按钮
 	$('#btnSave').bind('click', function() {
 		// 做表单字段验证，当所有字段都有效的时候返回true。该方法使用validatebox(验证框)插件。
@@ -146,5 +159,42 @@ function edit() {
 	// 获取被选中行的数据
 	var selected = $('#grid').datagrid('getSelected');
 	// 加载数据
+	var reg_id=selected.region_id;
+	var mag_id=selected.town_manager_id;
+	setManagerBox(reg_id,mag_id);
 	$('#editForm').form('load', selected);
 }
+function setEditReginBox(){
+	var url = "region/getregions?pid=83000";
+	$.getJSON(url,function(json) {
+		    $('#cc_region_ed').combobox({
+		        data: json,
+		        valueField: 'region_id',
+		        textField: 'region_name'
+		    });
+	});
+}
+function setManagerBox(region_id,manager_id){
+	var url = "manager/findManagerByRegionId?region_id="+region_id;
+	$.getJSON(url,function(json) {
+		    $('#cc_town_manager').combobox({
+		        data: json,
+		        valueField: 'manager_id',
+		        textField: 'manager_name'
+		    });
+		    $('#cc_town_manager').combobox('setValue',manager_id)
+	});
+}
+function cc_managerChange(manager_id){
+	var url = "manager/findManagerById?manager_id="+manager_id;
+	$.getJSON(url,function(json) {
+		var ttl = json.manager_title;
+		var tel1 = json.manager_contact1;
+		var tel2 = json.manager_contact2;
+		$('#town_manager_title').val(ttl);
+		$('#town_manager_tel1').val(tel1);
+		$('#town_manager_tel2').val(tel2);
+	})
+}
+
+
