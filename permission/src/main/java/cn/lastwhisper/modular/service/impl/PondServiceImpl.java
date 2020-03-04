@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -159,16 +160,39 @@ public class PondServiceImpl implements PondService {
 
 	}
 
+	@LogAnno(operateType = "添加堰塘信息")
+	@RequiresPermissions("堰塘管理")
 	@Override
 	public GlobalResult addPond(Pond pond) {
-		// TODO Auto-generated method stub
-		return null;
+		if (pond == null) {
+			return new GlobalResult(400, "堰塘信息为空，添加失败！", null);
+		}else {
+			pond.setDate_from(this.getIntDate());
+			pond.transerCheckStatus();
+		}	
+		Integer integer = pondMapper.insertPond(pond);
+		if (integer == 0) {
+			return new GlobalResult(400, "堰塘添加失败", null);
+		} else {
+			return new GlobalResult(200, "堰塘添加成功", null);
+		}
 	}
 
+	@LogAnno(operateType = "更新堰塘信息")
+	@RequiresPermissions("堰塘管理")
 	@Override
 	public GlobalResult updatePond(Pond pond) {
-		// TODO Auto-generated method stub
-		return null;
+		if (pond == null) {
+			return new GlobalResult(400, "堰塘信息为空，修改失败！", 400);
+		}else {
+			pond.transerCheckStatus();
+		}
+		Integer integer = pondMapper.updatePond(pond);
+		if (integer == 0) {
+			return new GlobalResult(400, "堰塘信息更新失败", null);
+		} else {
+			return new GlobalResult(200, "堰塘信息更新成功", null);
+		}
 	}
 
 	@Override
@@ -193,9 +217,7 @@ public class PondServiceImpl implements PondService {
 					cell.setCellType(CellType.STRING);
 				}
 				pond = new Pond();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-				String dtStr=sdf.format(new java.util.Date());
-				Integer dtFrom = new Integer(dtStr);
+				Integer dtFrom = getIntDate();
 				pond.setDate_from(dtFrom);
 				pond.setRegion_id(pondCrit.getRegion_id());
 				pond.setPondname(default_StringValue(row.getCell(2)));
@@ -324,4 +346,9 @@ public class PondServiceImpl implements PondService {
 		}
 	
 	}	
+	private Integer getIntDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String dtStr=sdf.format(new java.util.Date());
+		return new Integer(dtStr);
+	}
 }	

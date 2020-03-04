@@ -263,5 +263,20 @@ public class Pond  implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	public void transerCheckStatus() {
+		if(this.status_zhipai == null) {
+			this.setStatus_zhipai(0);
+		};
+		if(this.status_piaofu == null) {
+			this.setStatus_piaofu(0);
+		};
+		if(this.status_laji == null) {
+			this.setStatus_laji(0);
+		};
+		if(this.pond_maintainance == null) {
+			this.setStatus_govern(0);
+		}
+	}
 
 }

@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and
 			pond.pondname like '%${pondname}%'
 		</if>
-		<if test="region_id!=null">
+		<if test='region_id != null and region_id != ""'>
 			and
 			pond.region_id = '${region_id}'
 		</if>
@@ -84,4 +84,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{status_zhipai},#{status_piaofu},#{status_laji},#{status_govern},#{pond_maintainance},#{remark},#{status}
 	)
 	</insert>
+	<update id="updatePond" parameterType="pond">
+		update pond
+		<trim prefix="set" suffixOverrides="," suffix="where pond_id = #{pond_id}">
+			<if test='region_id != null and region_id != ""'>
+				region_id = #{region_id},
+			</if>
+			<if test='pondname != null and pondname != ""'>
+				pondname = #{pondname},
+			</if>
+			<if test='village_addr != null and village_addr != "" '>
+				village_addr = #{village_addr},
+			</if>
+				pondarea = #{pondarea},
+				pondage = #{pondage},
+				cover_area = #{cover_area},
+				benifit_farmers = #{benifit_farmers},
+				lng_deg = #{lng_deg},
+				lng_min = #{lng_min},
+				lng_sec = #{lng_sec},
+				lat_deg = #{lat_deg},
+				lat_min = #{lat_min},
+				lat_sec = #{lat_sec},
+				town_manager_id = #{town_manager_id},
+				village_manager_name = #{village_manager_name},
+				village_manager_title = #{village_manager_title},
+				village_manager_tel = #{village_manager_tel},
+				village_cleaner_name = #{village_cleaner_name},
+				village_cleaner_title = #{village_cleaner_title},
+				village_cleaner_tel = #{village_cleaner_tel},
+				pond_inspector = #{pond_inspector},
+				pond_inspector_title = #{pond_inspector_title},
+				pond_inspector_tel = #{pond_inspector_tel},
+				status_zhipai = #{status_zhipai},
+				status_piaofu = #{status_piaofu},
+				status_laji = #{status_laji},
+				status_govern = #{status_govern},
+				pond_maintainance = #{pond_maintainance},
+				remark = #{remark}
+		</trim>
+	</update>	
 </mapper>

@@ -92,6 +92,13 @@ $(function() {
 		$('#editDlg').dialog('close');
 		
 	});
+	$("#cc_region_ed").combobox({
+		onChange: function (newV,oldV) {
+			setManagerBox(newV,"");
+			cc_managerChange("");
+		}
+	});
+		
 
 	$("#cc_town_manager").combobox({
 		onChange: function (newV,oldV) {
@@ -186,15 +193,22 @@ function setManagerBox(region_id,manager_id){
 	});
 }
 function cc_managerChange(manager_id){
-	var url = "manager/findManagerById?manager_id="+manager_id;
-	$.getJSON(url,function(json) {
-		var ttl = json.manager_title;
-		var tel1 = json.manager_contact1;
-		var tel2 = json.manager_contact2;
-		$('#town_manager_title').val(ttl);
-		$('#town_manager_tel1').val(tel1);
-		$('#town_manager_tel2').val(tel2);
-	})
+	if(manager_id == ""){
+		$('#town_manager_title').val("");
+		$('#town_manager_tel1').val("");
+		$('#town_manager_tel2').val("");
+		
+	}else{
+		var url = "manager/findManagerById?manager_id="+manager_id;
+		$.getJSON(url,function(json) {
+			var ttl = json.manager_title;
+			var tel1 = json.manager_contact1;
+			var tel2 = json.manager_contact2;
+			$('#town_manager_title').val(ttl);
+			$('#town_manager_tel1').val(tel1);
+			$('#town_manager_tel2').val(tel2);
+		})
+	}
 }
 
 
