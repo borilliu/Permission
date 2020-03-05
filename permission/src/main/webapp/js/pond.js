@@ -166,10 +166,17 @@ function edit() {
 	// 获取被选中行的数据
 	var selected = $('#grid').datagrid('getSelected');
 	// 加载数据
-	var reg_id=selected.region_id;
-	var mag_id=selected.town_manager_id;
+	var reg_id = selected.region_id;
+	var mag_id = selected.town_manager_id;
 	setManagerBox(reg_id,mag_id);
-	$('#editForm').form('load', selected);
+	var pondId = selected.pond_id;
+	var url = "pond/findPondByID?pond_id="+pondId;
+	$.getJSON(url,function(data) {
+		var id=data.id;
+		var name=data.pondname;
+		$('#editForm').form('load', data);
+		//$('#editForm').form('load', selected);
+	});
 }
 function setEditReginBox(){
 	var url = "region/getregions?pid=83000";

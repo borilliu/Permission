@@ -26,8 +26,14 @@
 	</context:component-scan>
 
 	<!-- 注解实例化控制层 -->
-	<mvc:annotation-driven />
-
+	<mvc:annotation-driven>  
+	    <mvc:message-converters>  
+	    	<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	    		<property name="objectMapper" ref ="jacksonMapper">
+	    		</property>
+	        </bean>  
+	    </mvc:message-converters>  
+	</mvc:annotation-driven> 
 	<!-- 配置多媒体处理器 -->
 	<!-- 注意：这里id必须填写：multipartResolver -->
 	<bean id="multipartResolver"

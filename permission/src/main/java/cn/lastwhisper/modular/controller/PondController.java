@@ -46,6 +46,12 @@ public class PondController {
 		return pondList;
 	}
 
+	@RequestMapping(value = "/pond/findPondByID")
+	@ResponseBody
+	public Pond findPondByID(String pond_id) {
+		return  pondService.getPondById(pond_id);
+	}
+	
 	@RequestMapping(value = "/pond/pondadd", method = RequestMethod.POST)
 	@ResponseBody
 	public GlobalResult pondadd(Pond pond) {

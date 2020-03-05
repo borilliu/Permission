@@ -3,9 +3,19 @@ package cn.lastwhisper.modular.pojo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+
+import org.springframework.context.annotation.Bean;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import cn.lastwhisper.modular.pojo.Region;
 import cn.lastwhisper.modular.pojo.Manager;
 
+@JsonIgnoreProperties({"Region","manager"}) 
 public class Pond  implements Serializable{
 	 private static final long serialVersionUID = 1L;
 	 private String pond_id; 
@@ -44,6 +54,8 @@ public class Pond  implements Serializable{
 	 private String  remark ;
 	 private Integer  status ;
 	 private Timestamp update_time ;
+	 
+  
 	public String getPond_id() {
 		return pond_id;
 	}

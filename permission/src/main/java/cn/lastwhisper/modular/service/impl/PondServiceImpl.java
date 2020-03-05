@@ -63,6 +63,8 @@ public class PondServiceImpl implements PondService {
 		return list;
 	}
 	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Override	
 	public Pond getPondById(String pond_id) {
 		Pond pond = pondMapper.getPondById(pond_id);
 		return pond;
