@@ -91,6 +91,7 @@ legend {
 	left: 10px;
 	top: -11px;
 }
+
 .TextBoxReadOnly {
 	pointer-events: none;
 	border: none;
@@ -98,7 +99,6 @@ legend {
 	text-align: left;
 	readonly: expression(this.readOnly = true);
 }
-
 </style>
 </head>
 <body class="easyui-layout">
@@ -110,7 +110,7 @@ legend {
 				<tr>
 					<td>所属乡镇 ：</td>
 					<td><input id="cc_region" class="easyui-combobox"
-						name="region_id" value="" panelHeight="150" width="120"></td>
+						name="region_id" value="" panelHeight="auto" width="120"></td>
 					<td>堰塘名称 ：</td>
 					<td><input name="pondname" class="easyui-combobox"
 						id="inputtable" /></td>
@@ -177,6 +177,7 @@ legend {
 							<td colspan=3><select id="status_govern"
 								class="easyui-combobox" data-options="panelHeight:'auto'"
 								style="width: 80px" name="status_govern">
+									<option value="2"></option>
 									<option value="1">已整治</option>
 									<option value="0">未整治</option>
 							</select></td>
@@ -250,20 +251,20 @@ legend {
 						<tr>
 							<td>
 								<div style="margin: 0 auto; text-align: center">
-									<span>度</span><input name="lng_deg" class="textbox-short"
-										class="easyui-numberbox"> <span>分</span><input
-										name="lng_min" class="textbox-short" class="easyui-numberbox">
-									<span>秒</span><input name="lng_sec" class="textbox-short"
-										class="easyui-numberbox">
+									<input name="lng_deg" class="textbox-short"
+										class="easyui-numberbox" style="text-align:right;"><span>度</span> <input
+										name="lng_min" class="textbox-short" class="easyui-numberbox" style="text-align:right;"><span>分</span>
+									<input name="lng_sec" class="textbox-short"
+										class="easyui-numberbox" style="text-align:right;"><span>秒</span>
 								</div>
 							</td>
 							<td>
 								<div style="margin: 0 auto; text-align: center">
-									<span>度</span><input name="lat_deg" class="textbox-short"
-										class="easyui-numberbox"> <span>分</span><input
-										name="lat_min" class="textbox-short" class="easyui-numberbox">
-									<span>秒</span><input name="lat_sec" class="textbox-short"
-										class="easyui-numberbox">
+									<input name="lat_deg" class="textbox-short"
+										class="easyui-numberbox" style="text-align:right;"> <span>度</span><input
+										name="lat_min" class="textbox-short" class="easyui-numberbox" style="text-align:right;"><span>分</span>
+									<input name="lat_sec" class="textbox-short"
+										class="easyui-numberbox" style="text-align:right;"><span>秒</span>
 								</div>
 							</td>
 						</tr>

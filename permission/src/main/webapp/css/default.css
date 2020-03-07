@@ -44,4 +44,5 @@ a:hover{ color:Red; text-decoration:underline;}
 
 .textbox-short {
   width: 25px;
+  text-align: right;
 }
