@@ -166,9 +166,6 @@ function edit() {
 	// 获取被选中行的数据
 	var selected = $('#grid').datagrid('getSelected');
 	// 加载数据
-	var reg_id = selected.region_id;
-	var mag_id = selected.town_manager_id;
-	setManagerBox(reg_id,mag_id);
 	var pondId = selected.pond_id;
 	var url = "pond/findPondByID?pond_id="+pondId;
 	$.getJSON(url,function(data) {
@@ -177,6 +174,11 @@ function edit() {
 		$('#editForm').form('load', data);
 		//$('#editForm').form('load', selected);
 	});
+	var reg_id = selected.region_id;
+	$('#cc_region_ed').combobox('setValue',reg_id);
+	var mag_id = selected.town_manager_id;
+	setManagerBox(reg_id,mag_id);
+	
 }
 function setEditReginBox(){
 	var url = "region/getregions?pid=83000";

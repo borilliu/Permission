@@ -68,23 +68,16 @@ span {
 }
 
 fieldset {
-	padding: 10px;
+	padding: 20px 5px 5px 20px;
 	list-style: none;
-	margin-bottom: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	border-style: solid;
 	border-width: 1px;
 	border-radius: 8px;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	position: relative;
-}
-
-.TextBoxReadOnly {
-	pointer-events: none;
-	border: none;
-	border-bottom: 1px solid #C0C0C0;
-	text-align: left;
-	readonly: expression(this.readOnly = true);
 }
 
 legend {
@@ -98,6 +91,14 @@ legend {
 	left: 10px;
 	top: -11px;
 }
+.TextBoxReadOnly {
+	pointer-events: none;
+	border: none;
+	border-bottom: 1px solid #C0C0C0;
+	text-align: left;
+	readonly: expression(this.readOnly = true);
+}
+
 </style>
 </head>
 <body class="easyui-layout">
