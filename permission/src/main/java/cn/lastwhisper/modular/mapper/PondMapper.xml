@@ -39,8 +39,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
  	<select id="getRegionByID" parameterType="java.lang.String" resultType="cn.lastwhisper.modular.pojo.Region">
 		select * from region where region_id = #{region_id}
-	</select>     
-	 	<select id="getManagerByID" parameterType="java.lang.String" resultType="cn.lastwhisper.modular.pojo.Manager">
+	</select>   
+	 <select id="getPondMapByRegion" parameterType="java.lang.String" resultType="cn.lastwhisper.modular.pojo.TMap">
+		select lng_deg+lng_min/60+lng_sec/3600 lng,lat_deg+lat_min/60+lat_sec/3600 lat,status_govern status from pond
+		where 1=1
+		<if test='region_id != null and region_id != ""'>
+			and
+			pond.region_id = '${region_id}'
+		</if>
+	</select>    
+	 <select id="getManagerByID" parameterType="java.lang.String" resultType="cn.lastwhisper.modular.pojo.Manager">
 		select *  from manager where	manager_id = #{town_manager_id}
 	</select> 	
 	<select id="findPondlistByPage" parameterType="pond" resultType="pond">

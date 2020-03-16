@@ -18,6 +18,8 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -34,6 +36,7 @@ import cn.lastwhisper.modular.mapper.ManagerMapper;
 import cn.lastwhisper.modular.mapper.PondMapper;
 import cn.lastwhisper.modular.pojo.Manager;
 import cn.lastwhisper.modular.pojo.Pond;
+import cn.lastwhisper.modular.pojo.TMap;
 import cn.lastwhisper.modular.pojo.User;
 import cn.lastwhisper.modular.service.PondService;
 
@@ -44,6 +47,8 @@ public class PondServiceImpl implements PondService {
 	private PondMapper pondMapper;
 	@Autowired
 	private ManagerMapper managerMapper;
+	
+	private static Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	@Override
@@ -71,7 +76,14 @@ public class PondServiceImpl implements PondService {
 		return pond;
 
 	}
-
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Override
+	public List<TMap>getPondMapDataByRegion(String region_id){
+		List<TMap> list = pondMapper.getPondMapByRegion(region_id);
+		return list;
+		
+	}
+	
 	/**
 	 * 导出excel文件
 	 */
@@ -225,7 +237,7 @@ public class PondServiceImpl implements PondService {
 						if (cell != null) {
 							cell.setCellType(CellType.STRING);
 						} else {
-							System.out.println("Null Cell(" + i + "," + col + ")");
+							logger.debug("空单元格：{}行{}列",i,col );
 
 						}
 					}
@@ -266,6 +278,7 @@ public class PondServiceImpl implements PondService {
 					String managerName = default_StringValue(row.getCell(14)).trim();
 					List<Manager> managerList = managerMapper.findManagerByNameRegion(regionId, managerName);
 					if (managerList.size() != 1) {
+						logger.debug("乡镇塘长数据有误！塘长姓名{{},区域编号{},数量{}",managerName,regionId,managerList.size());
 						throw new IOException("乡镇塘长数据异常,请检查数据！");
 					} else {
 						String town_manager_id = managerList.get(0).getManager_id();

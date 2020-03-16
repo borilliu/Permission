@@ -8,6 +8,7 @@ import java.util.List;
 import cn.lastwhisper.core.util.EasyUIDataGridResult;
 import cn.lastwhisper.core.util.GlobalResult;
 import cn.lastwhisper.modular.pojo.Pond;
+import cn.lastwhisper.modular.pojo.TMap;
 import cn.lastwhisper.modular.pojo.User;
 
 public interface PondService {
@@ -15,6 +16,8 @@ public interface PondService {
 	public EasyUIDataGridResult findPondlistByPage(Pond pond, Integer page, Integer rows);
 
 	public List<Pond> findPondFuzzyName(String pondName);
+	
+	public List<TMap>getPondMapDataByRegion(String region_id);
 	
 	public Pond getPondById(String pond_id);
 

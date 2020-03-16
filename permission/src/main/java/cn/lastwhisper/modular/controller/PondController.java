@@ -20,6 +20,7 @@ import cn.lastwhisper.core.util.EasyUIDataGridResult;
 import cn.lastwhisper.core.util.GlobalResult;
 import cn.lastwhisper.core.util.UserUtils;
 import cn.lastwhisper.modular.pojo.Pond;
+import cn.lastwhisper.modular.pojo.TMap;
 import cn.lastwhisper.modular.service.LogService;
 import cn.lastwhisper.modular.service.PondService;
 
@@ -28,9 +29,6 @@ import cn.lastwhisper.modular.service.PondService;
 public class PondController {
 	@Autowired
 	private PondService pondService;
-	@Autowired
-	private LogService logService;
-
 	@RequestMapping(value = "/pond/pondlistByPage", method = RequestMethod.POST)
 	@ResponseBody
 	public EasyUIDataGridResult PondlistByPage(Pond pond,
@@ -50,6 +48,12 @@ public class PondController {
 	@ResponseBody
 	public Pond findPondByID(String pond_id) {
 		return  pondService.getPondById(pond_id);
+	}
+	
+	@RequestMapping(value = "/pond/findPondMapData")
+	@ResponseBody
+	public List<TMap> findPondMapData(String region_id) {
+		return  pondService.getPondMapDataByRegion(region_id);
 	}
 	
 	@RequestMapping(value = "/pond/pondadd", method = RequestMethod.POST)

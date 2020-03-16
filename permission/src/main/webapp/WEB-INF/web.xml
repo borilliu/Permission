@@ -76,7 +76,6 @@
 		<filter-name>characterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
 	<!-- druid监控 -->
 	<servlet>
 		<servlet-name>DruidStatView</servlet-name>
@@ -86,7 +85,15 @@
 		<servlet-name>DruidStatView</servlet-name>
 		<url-pattern>/druid/*</url-pattern>
 	</servlet-mapping>
-	
+	<!-- Web Log -->
+    <servlet>
+        <servlet-name>ViewStatusMessages</servlet-name>
+        <servlet-class>ch.qos.logback.classic.ViewStatusMessagesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewStatusMessages</servlet-name>
+        <url-pattern>/logStatus</url-pattern>
+    </servlet-mapping>	
 	<!-- 添加Web应用等监控 -->
 	<filter>
 		<filter-name>DruidWebStatFilter</filter-name>
