@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -76,10 +77,17 @@ public class PondServiceImpl implements PondService {
 		return pond;
 
 	}
+	/**
+	 * 获取水体地理位置数据
+	 */
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<TMap>getPondMapDataByRegion(String region_id){
 		List<TMap> list = pondMapper.getPondMapByRegion(region_id);
+		list.forEach(tmap -> {
+	            				tmap.transferGPS();
+	        				 }
+					);
 		return list;
 		
 	}

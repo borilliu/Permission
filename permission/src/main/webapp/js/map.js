@@ -2,9 +2,16 @@ document.write("<script type='text/javascript' src='https://map.qq.com/api/js?v=
 $(function() {
 	var geocoder, map = null;
 	var BaseRegion = "枝江市";
+	var sw = new qq.maps.LatLng (29.681981072204525, 110.71229505761717);
+	var ne = new qq.maps.LatLng (31.1668799036797, 112.78047132714842);
+	var bounds = new qq.maps.LatLngBounds(sw,ne);
 	map = new qq.maps.Map("container", {
 		center: new qq.maps.LatLng(30.42583, 111.76044),
-		zoom: 11
+		zoom: 11,
+		minZoom: 10,
+		maxZoom: 16,
+		boundary:bounds
+		
 	});
 	var url = "pond/findPondMapData";
 	$.ajax({
