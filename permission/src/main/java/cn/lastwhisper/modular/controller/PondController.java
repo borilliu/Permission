@@ -56,6 +56,12 @@ public class PondController {
 		return  pondService.getPondMapDataByRegion(region_id);
 	}
 	
+	@RequestMapping(value = "/pond/findPondMapMarker")
+	@ResponseBody
+	public List<TMap> findPondMapMarker(String region_id) {
+		return  pondService.getPondMapMarkerByRegion(region_id);
+	}
+	
 	@RequestMapping(value = "/pond/pondadd", method = RequestMethod.POST)
 	@ResponseBody
 	public GlobalResult pondadd(Pond pond) {

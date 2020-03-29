@@ -17,7 +17,14 @@ public class TMap implements Serializable{
 	 private BigDecimal lat;
 	 private BigDecimal lng; 
 	 private String status;
-	 private static DsTransform transform = new DsTransform();
+	 private String title;
+	 public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	private static DsTransform transform = new DsTransform();
 	public BigDecimal getLat() {
 		return lat;
 	}

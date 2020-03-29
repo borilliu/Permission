@@ -16,6 +16,8 @@ public interface PondMapper {
 	public Pond getPondById(String pond_id);
 	
 	public List<TMap> getPondMapByRegion(@Param("region_id")String region_id);
+	
+	public List<TMap> getPondMarkerByRegion(@Param("region_id")String region_id);
 
 	public Integer insertPond(Pond pond);
 	

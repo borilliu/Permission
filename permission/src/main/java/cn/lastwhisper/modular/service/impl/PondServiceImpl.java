@@ -92,6 +92,17 @@ public class PondServiceImpl implements PondService {
 		
 	}
 	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Override
+	public List<TMap>getPondMapMarkerByRegion(String region_id){
+		List<TMap> list = pondMapper.getPondMarkerByRegion(region_id);
+		list.forEach(tmap -> {
+	            				tmap.transferGPS();
+	        				 }
+					);
+		return list;
+		
+	}	
 	/**
 	 * 导出excel文件
 	 */

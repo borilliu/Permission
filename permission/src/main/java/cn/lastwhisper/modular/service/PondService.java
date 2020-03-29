@@ -19,6 +19,8 @@ public interface PondService {
 	
 	public List<TMap>getPondMapDataByRegion(String region_id);
 	
+	public List<TMap>getPondMapMarkerByRegion(String region_id);
+	
 	public Pond getPondById(String pond_id);
 
 	public GlobalResult addPond(Pond pond);

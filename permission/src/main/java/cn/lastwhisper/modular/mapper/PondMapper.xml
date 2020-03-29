@@ -47,6 +47,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and
 			pond.region_id = '${region_id}'
 		</if>
+	</select>  
+	  	 <select id="getPondMarkerByRegion" parameterType="java.lang.String" resultType="cn.lastwhisper.modular.pojo.TMap">
+		select lng_deg+lng_min/60+lng_sec/3600 lng,lat_deg+lat_min/60+lat_sec/3600 lat,status_govern status, CONCAT_WS(" - ", village_addr, pondname,pond_id) as title  from pond
+		where 1=1
+		<if test='region_id != null and region_id != ""'>
+			and
+			pond.region_id = '${region_id}'
+		</if>
 	</select>    
 	 <select id="getManagerByID" parameterType="java.lang.String" resultType="cn.lastwhisper.modular.pojo.Manager">
 		select *  from manager where	manager_id = #{town_manager_id}
@@ -65,6 +73,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test='region_id != null and region_id != ""'>
 			and
 			pond.region_id = '${region_id}'
+		</if>
+		<if test='pond_id != null and pond_id != ""'>
+			and
+			pond.pond_id = '${pond_id}'
 		</if>
 	</select>
 	<select id="findPondFuzzyName" parameterType="java.lang.String" resultType="pond">
