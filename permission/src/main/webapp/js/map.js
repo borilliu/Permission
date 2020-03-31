@@ -2,13 +2,15 @@ document.write("<script type='text/javascript' src='https://map.qq.com/api/js?v=
 $(function() {
 	var geocoder, map = null;
 	var BaseRegion = "枝江市";
-	var sw = new qq.maps.LatLng (29.681981072204525, 110.71229505761717);
-	var ne = new qq.maps.LatLng (31.1668799036797, 112.78047132714842);
+	//var sw = new qq.maps.LatLng (29.681981072204525, 110.71229505761717);
+	//var ne = new qq.maps.LatLng (31.1668799036797, 112.78047132714842);
+	var sw = new qq.maps.LatLng (30.6802183400,111.4508056600);
+	var ne = new qq.maps.LatLng (30.2394931500,112.2322082500);
 	var bounds = new qq.maps.LatLngBounds(sw,ne);
 	map = new qq.maps.Map("container", {
 		center: new qq.maps.LatLng(30.42583, 111.76044),
 		zoom: 11,
-		minZoom: 10,
+		minZoom: 11,
 		maxZoom: 16,
 		boundary:bounds
 		
@@ -26,21 +28,21 @@ $(function() {
 				groupBy:"status",
 				groupStyles:{
 				"2":{
-					fillColor: "#0D0",
-					strokeColor: "#FFF",
-					strokeWidth: 1,
+					fillColor: "#7FB8FF",
+					strokeColor: "#4B6AA3",
+					strokeWidth: 0.2,
 					radius: 4
 				},
 				"1":{
-						fillColor: "#0D0",
-						strokeColor: "#FFF",
-						strokeWidth: 1,
+						fillColor: "#7FB8FF",
+						strokeColor: "#4B6AA3",
+						strokeWidth: 0.2,
 						radius: 4
 				},	
 				"0":{
 					fillColor: "#F00",
-					strokeColor: "#FFF",
-					strokeWidth: 1,
+					strokeColor: "#E00404",
+					strokeWidth: 0.2,
 					radius: 4
 			}	
 				},
